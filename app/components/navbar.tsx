@@ -12,17 +12,20 @@ export default function Navbar() {
   const pathname = usePathname();
 
   const services = [
-    { name: "Company Registration", href: "/services/company-registration" },
-    { name: "GST Registration", href: "/services/gst" },
-    { name: "Trademark Registration", href: "/services/trademark" },
-    { name: "Income Tax Filing", href: "/services/income-tax" },
-    { name: "Legal Documentation", href: "/services/legal-docs" },
+    { name: "Company Registration", href: "/company-registration" },
+    { name: "GST Registration", href: "/gst-registration" },
+    { name: "Trademark Registration", href: "/Trademark" },
+    { name: "Income Tax Filing", href: "/income-tax-filing" },
+    { name: "Legal Documentation", href: "/legal-documentation" },
   ];
+
+  const isServicePage = services.some(
+    (service) => pathname === service.href
+  );
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white shadow-sm">
       <div className="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between px-6 lg:px-16">
-
         {/* Logo */}
         <Link href="/" className="flex items-center">
           <span className="text-3xl font-bold">
@@ -33,14 +36,12 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <nav className="hidden h-full items-center gap-10 lg:flex">
-
           <Link
             href="/"
-            className={`text-[15px] font-medium transition ${
-              pathname === "/"
+            className={`text-[15px] font-medium transition ${pathname === "/"
                 ? "text-[#0B1F4D]"
                 : "text-slate-700 hover:text-[#0B1F4D]"
-            }`}
+              }`}
           >
             Home
           </Link>
@@ -48,11 +49,10 @@ export default function Navbar() {
           {/* Services Dropdown */}
           <div className="group relative flex h-full items-center">
             <button
-              className={`flex items-center gap-1 text-[15px] font-medium transition ${
-                pathname.startsWith("/services")
+              className={`flex items-center gap-1 text-[15px] font-medium transition ${isServicePage
                   ? "text-[#0B1F4D]"
                   : "text-slate-700 hover:text-[#0B1F4D]"
-              }`}
+                }`}
             >
               Services
               <HiChevronDown
@@ -66,7 +66,10 @@ export default function Navbar() {
                 <Link
                   key={service.href}
                   href={service.href}
-                  className="rounded-lg px-3 py-2.5 text-[14px] font-medium text-slate-700 transition hover:bg-gray-50 hover:text-[#0B1F4D]"
+                  className={`rounded-lg px-3 py-2.5 text-[14px] font-medium transition ${pathname === service.href
+                    ? "bg-blue-50 text-[#0B1F4D]"
+                    : "text-slate-700 hover:bg-gray-50 hover:text-[#0B1F4D]"
+                    }`}
                 >
                   {service.name}
                 </Link>
@@ -87,35 +90,21 @@ export default function Navbar() {
           {/* About */}
           <Link
             href="/about"
-            className={`text-[15px] font-medium transition ${
-              pathname === "/about"
+            className={`text-[15px] font-medium transition ${pathname === "/about"
                 ? "text-[#0B1F4D]"
                 : "text-slate-700 hover:text-[#0B1F4D]"
-            }`}
+              }`}
           >
             About Us
-          </Link>
-
-          {/* Services Free */}
-          <Link
-            href="/services"
-            className={`text-[15px] font-medium transition ${
-              pathname === "/services-free"
-                ? "text-[#0B1F4D]"
-                : "text-slate-700 hover:text-[#0B1F4D]"
-            }`}
-          >
-            Services Free
           </Link>
 
           {/* Contact */}
           <Link
             href="/contact"
-            className={`text-[15px] font-medium transition ${
-              pathname === "/contact"
+            className={`text-[15px] font-medium transition ${pathname === "/contact"
                 ? "text-[#0B1F4D]"
                 : "text-slate-700 hover:text-[#0B1F4D]"
-            }`}
+              }`}
           >
             Contact
           </Link>
@@ -137,7 +126,6 @@ export default function Navbar() {
       {open && (
         <div className="border-t border-gray-100 bg-white lg:hidden">
           <div className="flex flex-col gap-5 px-6 py-6">
-
             <Link
               href="/"
               onClick={() => setOpen(false)}
@@ -157,9 +145,8 @@ export default function Navbar() {
                 Services
                 <HiChevronDown
                   size={18}
-                  className={`transition-transform ${
-                    mobileServicesOpen ? "rotate-180" : ""
-                  }`}
+                  className={`transition-transform ${mobileServicesOpen ? "rotate-180" : ""
+                    }`}
                 />
               </button>
 
@@ -170,7 +157,10 @@ export default function Navbar() {
                       key={service.href}
                       href={service.href}
                       onClick={() => setOpen(false)}
-                      className="text-[14px] font-medium text-slate-600 hover:text-[#0B1F4D]"
+                      className={`text-[14px] font-medium transition ${pathname === service.href
+                        ? "text-[#0B1F4D]"
+                        : "text-slate-600 hover:text-[#0B1F4D]"
+                        }`}
                     >
                       {service.name}
                     </Link>
@@ -197,21 +187,12 @@ export default function Navbar() {
             </Link>
 
             <Link
-              href="/services"
-              onClick={() => setOpen(false)}
-              className="text-[15px] font-medium text-slate-700"
-            >
-              Services Free
-            </Link>
-
-            <Link
               href="/contact"
               onClick={() => setOpen(false)}
               className="text-[15px] font-medium text-slate-700"
             >
               Contact
             </Link>
-
           </div>
         </div>
       )}
