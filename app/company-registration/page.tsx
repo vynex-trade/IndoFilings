@@ -38,7 +38,7 @@ export default function CompanyRegistrationPage() {
         "Set up your One Person Company and enjoy full control with limited liability. Click to learn.",
       icon: <FiUser size={32} className="text-purple-500" />,
       iconBg: "bg-purple-50",
-      link: "/one-person-company-registration",
+      link: "/company-registration/one-person-company-registration",
     },
     {
       id: 4,
@@ -47,7 +47,7 @@ export default function CompanyRegistrationPage() {
         "Register your Public Limited Company and unlock investment opportunities. Explore to learn.",
       icon: <VscOrganization size={32} className="text-green-600" />,
       iconBg: "bg-green-50",
-      link: "/public-limited-company-registration",
+      link: "/company-registration/private-company-registration",
     },
     {
       id: 5,
