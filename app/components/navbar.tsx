@@ -26,8 +26,8 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center">
           <span className="text-3xl font-bold">
-            Online
-            <span className="ml-1 text-[#3B82F6]">Services</span>
+            Indo
+            <span className="ml-1 text-[#3B82F6]">Filings</span>
           </span>
         </Link>
 
