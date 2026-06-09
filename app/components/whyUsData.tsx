@@ -10,70 +10,107 @@ import {
   FaMoneyBillWave,
 } from "react-icons/fa";
 
+// FIX: Added 'description' property to each object in the array
 const features = [
-  { icon: <FaAward />, title: "Recognized by Govt. of India" },
-  { icon: <FaSmile />, title: "5 Lakh+ Happy Customers Across India" },
-  { icon: <FaCertificate />, title: "ISO Certified" },
-  { icon: <FaShieldAlt />, title: "Data Security & Trust" },
-  { icon: <FaHeadset />, title: "Trained & Professional Experts" },
-  { icon: <FaClock />, title: "On Time Service" },
-  { icon: <FaBolt />, title: "Super Fast Service" },
-  { icon: <FaStopwatch />, title: "Quick Response Team" },
-  { icon: <FaMoneyBillWave />, title: "Affordable Pricing" },
+  {
+    icon: <FaAward />,
+    title: "Recognized by Govt. of India",
+    description: "Officially recognized by the Government of India for providing reliable and authentic legal services."
+  },
+  {
+    icon: <FaSmile />,
+    title: "5 Lakh+ Happy Customers Across India",
+    description: "Trusted by over 500,000 satisfied businesses and individuals nationwide."
+  },
+  {
+    icon: <FaCertificate />,
+    title: "ISO Certified",
+    description: "ISO 9001:2015 certified company ensuring top-notch quality management and service delivery."
+  },
+  {
+    icon: <FaShieldAlt />,
+    title: "Data Security & Trust",
+    description: "We employ bank-grade security protocols to keep your sensitive business data completely safe."
+  },
+  {
+    icon: <FaHeadset />,
+    title: "Trained & Professional Experts",
+    description: "Our team consists of certified CAs, CSs, and legal experts with years of industry experience."
+  },
+  {
+    icon: <FaClock />,
+    title: "On Time Service",
+    description: "We value your time and guarantee delivery of all documents and services strictly within deadlines."
+  },
+  {
+    icon: <FaBolt />,
+    title: "Super Fast Service",
+    description: "Experience lightning-fast processing for all your registration, taxation, and compliance needs."
+  },
+  {
+    icon: <FaStopwatch />,
+    title: "Quick Response Team",
+    description: "Our dedicated customer support team is always on standby to resolve your queries instantly."
+  },
+  {
+    icon: <FaMoneyBillWave />,
+    title: "Affordable Pricing",
+    description: "Premium legal and taxation services offered at highly competitive and transparent prices with no hidden fees."
+  },
 ];
 
 export default function WhyUs() {
   return (
-    <section className="py-20 px-5 bg-gradient-to-b from-slate-100 to-white">
+    <section className="py-20 px-5 bg-gradient-to-br from-[#f8fafc] to-[#eef4ff]">
       <div className="max-w-7xl mx-auto">
+
         {/* Heading */}
-        <div className="text-center mb-14">
-          <span className="text-blue-600 font-semibold uppercase tracking-[3px]">
+        <div className="text-center mb-16">
+          <span className="text-[#f26522] font-semibold uppercase tracking-[3px]">
             WHY CHOOSE US
           </span>
 
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mt-3">
-            Why Us?
+          <h2 className="text-4xl md:text-5xl font-bold text-[#0B1F4D] mt-3">
+            Why Choose Online Legal India?
           </h2>
 
-          <div className="w-24 h-1 bg-blue-600 mx-auto mt-4 rounded-full"></div>
+          <p className="text-slate-600 max-w-3xl mx-auto mt-4">
+            Trusted GST experts delivering quick registration, compliance support,
+            and end-to-end business taxation services across India.
+          </p>
+
+          <div className="w-24 h-1 bg-[#f26522] mx-auto mt-5 rounded-full"></div>
         </div>
 
-        {/* Features Grid */}
+        {/* Features */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+
           {features.map((feature, index) => (
             <div
               key={index}
-              className="flex items-center h-24 hover:scale-105 transition-all duration-300"
+              className="group bg-white rounded-3xl p-8 border border-slate-200 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
             >
-              {/* Icon Box */}
-              <div
-                className="bg-[#2563EB] w-24 h-full flex items-center justify-center flex-shrink-0 shadow-lg"
-                style={{
-                  clipPath:
-                    "polygon(0 0, 100% 0, 85% 50%, 100% 100%, 0 100%, 15% 50%)",
-                }}
-              >
-                <span className="text-white text-3xl">
+
+              {/* Icon */}
+              <div className="w-16 h-16 rounded-2xl bg-[#f26522]/10 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition">
+                <span className="text-[#f26522]">
                   {feature.icon}
                 </span>
               </div>
 
-              {/* Content Box */}
-              <div
-                className="flex-1 h-full bg-gradient-to-r from-[#0F172A] via-[#1E3A8A] to-[#2563EB] flex items-center justify-center px-8 -ml-4 shadow-lg"
-                style={{
-                  clipPath:
-                    "polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%, 10% 50%)",
-                }}
-              >
-                <p className="text-white text-sm md:text-base font-semibold text-center leading-snug">
-                  {feature.title}
-                </p>
-              </div>
+              {/* Content */}
+              <h3 className="text-xl font-bold text-[#0B1F4D] mb-3">
+                {feature.title}
+              </h3>
+
+              <p className="text-slate-600 leading-7">
+                {feature.description}
+              </p>
+
             </div>
           ))}
         </div>
+
       </div>
     </section>
   );

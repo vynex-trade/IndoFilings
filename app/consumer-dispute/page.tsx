@@ -17,7 +17,8 @@ import { IoMdSpeedometer } from "react-icons/io";
 import Image from "next/image";
 
 export default function Page() {
-  const [openCard, setOpenCard] = useState(1);
+  // FIX 1: Explicitly type the state as number | null
+  const [openCard, setOpenCard] = useState<number | null>(1);
 
   const categories = [
     { name: "Airline Complaints", icon: <FaPlane className="w-10 h-10" /> },
@@ -41,7 +42,8 @@ export default function Page() {
     { name: "D2H Complaints", icon: <FaSatelliteDish className="w-10 h-10" /> }
   ];
 
-  const toggleCard = (cardNumber) => {
+  // FIX 2: Add ": number" type to cardNumber parameter
+  const toggleCard = (cardNumber: number) => {
     setOpenCard(openCard === cardNumber ? null : cardNumber);
   };
 

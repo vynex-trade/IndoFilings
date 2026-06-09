@@ -22,15 +22,20 @@ export default function FreeCompliancePage() {
     agreed: false,
   });
 
-  const [errors, setErrors] = useState({});
+  // FIX: Added Record<string, string> to allow dynamic string keys for errors
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const [stateOpen, setStateOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const dropdownRef = useRef(null);
+
+  // FIX: Added HTMLDivElement type to the ref
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+    // FIX: Added type MouseEvent to 'e'
+    const handleClickOutside = (e: MouseEvent) => {
+      // FIX: Cast e.target to Node so .contains() accepts it
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setStateOpen(false);
         setSearchTerm("");
       }
@@ -39,7 +44,8 @@ export default function FreeCompliancePage() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleChange = (e) => {
+  // FIX: Added type React.ChangeEvent<HTMLInputElement> to 'e'
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -48,7 +54,8 @@ export default function FreeCompliancePage() {
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  const handleStateSelect = (state) => {
+  // FIX: Added type string to 'state'
+  const handleStateSelect = (state: string) => {
     setFormData((prev) => ({ ...prev, state }));
     setErrors((prev) => ({ ...prev, state: "" }));
     setStateOpen(false);
@@ -60,7 +67,7 @@ export default function FreeCompliancePage() {
   );
 
   const validate = () => {
-    const newErrors = {};
+    const newErrors: Record<string, string> = {};
     if (!formData.fullName.trim()) newErrors.fullName = "Full name is required";
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
@@ -78,7 +85,8 @@ export default function FreeCompliancePage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+  // FIX: Added type React.FormEvent<HTMLFormElement> to 'e'
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validate()) return;
 
@@ -184,19 +192,17 @@ export default function FreeCompliancePage() {
                 <button
                   type="button"
                   onClick={() => setStateOpen((prev) => !prev)}
-                  className={`flex w-full items-center justify-between rounded-full border bg-white px-5 py-3 text-left text-sm outline-none transition-colors sm:text-base ${
-                    stateOpen
+                  className={`flex w-full items-center justify-between rounded-full border bg-white px-5 py-3 text-left text-sm outline-none transition-colors sm:text-base ${stateOpen
                       ? "border-orange-500"
                       : "border-gray-300 hover:border-gray-400"
-                  } ${formData.state ? "text-gray-900" : "text-gray-400"}`}
+                    } ${formData.state ? "text-gray-900" : "text-gray-400"}`}
                 >
                   <span className="truncate">
                     {formData.state || "State"}
                   </span>
                   <svg
-                    className={`ml-2 h-4 w-4 flex-shrink-0 text-gray-500 transition-transform ${
-                      stateOpen ? "rotate-180" : ""
-                    }`}
+                    className={`ml-2 h-4 w-4 flex-shrink-0 text-gray-500 transition-transform ${stateOpen ? "rotate-180" : ""
+                      }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -233,11 +239,10 @@ export default function FreeCompliancePage() {
                             <button
                               type="button"
                               onClick={() => handleStateSelect(s)}
-                              className={`block w-full px-5 py-2.5 text-left text-sm transition-colors hover:bg-orange-50 hover:text-orange-600 ${
-                                formData.state === s
+                              className={`block w-full px-5 py-2.5 text-left text-sm transition-colors hover:bg-orange-50 hover:text-orange-600 ${formData.state === s
                                   ? "bg-orange-50 font-medium text-orange-600"
                                   : "text-gray-700"
-                              }`}
+                                }`}
                             >
                               {s}
                             </button>

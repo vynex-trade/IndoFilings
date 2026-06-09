@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import { 
-  FaFileAlt, FaTrademark, FaCertificate, FaPercent, FaUser, 
+import {
+  FaFileAlt, FaTrademark, FaCertificate, FaPercent, FaUser,
   FaPhoneAlt, FaCalculator, FaIdCard, FaDesktop, FaGavel,
   FaStar, FaQuoteLeft, FaQuoteRight, FaAngleRight, FaPlay,
   FaSmile, FaCheckCircle, FaShieldAlt, FaUserSecret, FaClock,
@@ -56,7 +56,8 @@ const whyUsData = [
 
 // --- COMPONENTS ---
 
-const SectionHeading = ({ title }) => (
+// FIX: Added Type for props '{ title: string }'
+const SectionHeading = ({ title }: { title: string }) => (
   <div className="text-center mb-12">
     <h2 className="text-3xl font-bold text-[#111b40] mb-2">{title}</h2>
     <div className="w-10 h-1 bg-[#10a850] mx-auto rounded-full"></div>
@@ -73,10 +74,10 @@ export default function Home() {
       <section className="relative py-16 lg:py-24 overflow-hidden bg-gradient-to-br from-gray-50 to-blue-50">
         {/* Background Shape */}
         <div className="hidden lg:block absolute top-0 right-0 bottom-0 w-[40%] bg-[#e6f0f7] rounded-l-full z-0"></div>
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            
+
             {/* Hero Left Content */}
             <div>
               <div className="border-l-4 border-[#f16622] pl-4 mb-6">
@@ -90,8 +91,8 @@ export default function Home() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4">
                 <div>
                   {heroListLeft.map((item, idx) => (
-                    <Link 
-                      key={idx} 
+                    <Link
+                      key={idx}
                       href={item.link}
                       className="flex items-center mb-4 group cursor-pointer hover:translate-x-1 transition-transform duration-200"
                     >
@@ -106,8 +107,8 @@ export default function Home() {
                 </div>
                 <div>
                   {heroListRight.map((item, idx) => (
-                    <Link 
-                      key={idx} 
+                    <Link
+                      key={idx}
                       href={item.link}
                       className="flex items-center mb-4 group cursor-pointer hover:translate-x-1 transition-transform duration-200"
                     >
@@ -125,12 +126,12 @@ export default function Home() {
 
             {/* Hero Right Image & Cards */}
             <div className="relative text-center mt-10 lg:mt-0">
-              <img 
-                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=600&h=800" 
-                alt="Brand Ambassador" 
+              <img
+                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=600&h=800"
+                alt="Brand Ambassador"
                 className="inline-block max-h-[550px] object-cover rounded-lg"
               />
-              
+
               {/* Rating Floating Card */}
               <div className="absolute top-[10%] left-0 lg:-left-10 bg-white p-4 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.1)] z-20">
                 <div className="flex items-center mb-1">
@@ -138,7 +139,7 @@ export default function Home() {
                   <FaStar className="text-[#f16622] text-xl" />
                 </div>
                 <p className="text-xs text-gray-600 m-0 leading-tight">
-                  Our Ratings from 6000+<br/>customers on <span className="font-bold text-[#4285F4]">Google</span>
+                  Our Ratings from 6000+<br />customers on <span className="font-bold text-[#4285F4]">Google</span>
                 </p>
               </div>
 
@@ -159,12 +160,12 @@ export default function Home() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-12 mb-12">
-            
+
             <div className="w-full lg:w-5/12 relative">
               <div className="bg-[#e4edf4] p-0 rounded-[20px] overflow-hidden text-center">
-                <img 
-                  src="https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&q=80&w=500&h=550" 
-                  alt="Mr. Saurabh Shukla" 
+                <img
+                  src="https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&q=80&w=500&h=550"
+                  alt="Mr. Saurabh Shukla"
                   className="w-full object-cover rounded-[20px]"
                 />
               </div>
@@ -185,7 +186,7 @@ export default function Home() {
               </p>
             </div>
           </div>
-          
+
           <div className="bg-[#fdf5ea] border-l-4 border-[#f16622] rounded-lg p-6 md:p-8 text-center shadow-sm">
             <p className="text-gray-800 font-medium md:text-lg">
               Online Legal India is India's 1st & only all-in-one platform, that provides business registration, licences, GST & tax, regulatory compliance, ODR-enabled legal support, audit, HR & payroll, all under one roof.
@@ -198,14 +199,14 @@ export default function Home() {
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading title="Our Services" />
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {servicesData.map((service, idx) => (
               <div key={idx} className="bg-white flex flex-col group">
                 <Link href={service.link} className="overflow-hidden rounded-t-md block">
-                  <img 
-                    src={service.img} 
-                    alt={service.title} 
+                  <img
+                    src={service.img}
+                    alt={service.title}
                     className="w-full h-44 object-cover transform group-hover:scale-105 transition duration-500"
                   />
                 </Link>
@@ -232,7 +233,7 @@ export default function Home() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading title="Expertise Meets Credibility" />
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               "https://images.unsplash.com/photo-1593642532744-d377ab507dc8?auto=format&fit=crop&q=80&w=600",
@@ -254,13 +255,13 @@ export default function Home() {
       <section className="py-20 bg-[#f2f4f7]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
-            
+
             {/* Founder Card */}
             <div className="col-span-1">
               <div className="bg-white rounded-xl shadow-sm overflow-hidden h-full flex flex-col">
-                <img 
-                  src="https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?auto=format&fit=crop&q=80&w=400" 
-                  alt="Rajesh Kewat" 
+                <img
+                  src="https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?auto=format&fit=crop&q=80&w=400"
+                  alt="Rajesh Kewat"
                   className="w-full h-[350px] object-cover object-top"
                 />
                 <div className="p-6 text-center flex-grow flex flex-col justify-center">
@@ -274,7 +275,7 @@ export default function Home() {
 
             {/* Media Grid */}
             <div className="col-span-1 lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
-              
+
               <div className="bg-white rounded-xl p-6 shadow-sm flex flex-col items-center justify-center text-center hover:-translate-y-1 transition duration-300">
                 <h3 className="font-bold text-2xl text-[#d32f2f] mb-3">ZEE<span className="text-gray-800">NEWS</span></h3>
                 <p className="text-xs text-gray-500">Meet Rajesh Kewat, The Small Town Entrepreneur Behind Online Legal India's Success</p>
@@ -313,7 +314,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      
+
       <WhyUsData />
     </div>
   );
