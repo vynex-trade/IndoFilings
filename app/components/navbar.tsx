@@ -28,10 +28,12 @@ export default function Navbar() {
       <div className="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between px-6 lg:px-16">
         {/* Logo */}
         <Link href="/" className="flex items-center">
-          <span className="text-3xl font-bold">
-            Indo
-            <span className="ml-1 text-[#3B82F6]">Filings</span>
-          </span>
+          <h1 className="font-bold leading-none whitespace-nowrap">
+            <span className="text-lg sm:text-2xl md:text-3xl">Indo</span>
+            <span className="text-lg sm:text-2xl md:text-3xl text-[#3B82F6]">
+              Filings
+            </span>
+          </h1>
         </Link>
 
         {/* Desktop Menu */}
