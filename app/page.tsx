@@ -28,7 +28,7 @@ const heroListRight = [
 ];
 
 const servicesData = [
-  { title: 'Trademark Registration Online', desc: 'Register your trademark (brand name, logo, slogan, icon, etc.) from anywhere in India through our online registration assistance services.', img: 'https://images.unsplash.com/photo-1628155930542-3c7a64e2c848?auto=format&fit=crop&q=80&w=400', link: '/Trademark' },
+  { title: 'Trademark Registration Online', desc: 'Register your trademark (brand name, logo, slogan, icon, etc.) from anywhere in India through our online registration assistance services.', img: 'Trademark.jpg', link: '/Trademark' },
   { title: 'ISO Registration', desc: 'Get your ISO Certification support from anywhere in India and enhance your business credibility with globally recognized standards.', img: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=400', link: '/iso-certification' },
   { title: 'GST Registration Services', desc: 'Online Legal India supports you to meet GST compliance for your business.', img: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=400', link: '/gst-registration' },
   { title: 'Company Registration', desc: 'We have professionals to support everything online on the ROC portal and relieve you of any burden. Click to learn.', img: 'https://images.unsplash.com/photo-1560472355-536de3962603?auto=format&fit=crop&q=80&w=400', link: '/company-registration' },
