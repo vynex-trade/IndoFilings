@@ -103,7 +103,7 @@ export default function Footer() {
         {/* Company Info */}
         <div className="mt-12">
           <p className="text-[14px] font-bold text-slate-100">
-            IndoFilings is a part of FastInfo Legal Services Pvt Ltd. Which is registered under the Companies Act, 2016.
+            IndoFilings is a company registered under the Companies Act, 2016.
           </p>
         </div>
 
