@@ -103,7 +103,7 @@ export default function Footer() {
         {/* Company Info */}
         <div className="mt-12">
           <p className="text-[14px] font-bold text-slate-100">
-            Online Legal India is a part of FastInfo Legal Services Pvt Ltd. Which is registered under the Companies Act, 2013.
+            IndoFilings is a part of FastInfo Legal Services Pvt Ltd. Which is registered under the Companies Act, 2016.
           </p>
         </div>
 
@@ -220,7 +220,7 @@ export default function Footer() {
       <div className="w-full bg-[#0B1F4D] border-t border-slate-700">
         <div className="mx-auto flex max-w-[1440px] flex-col items-center justify-center gap-2 px-6 py-5 text-center lg:px-16">
           <p className="text-[13px] font-medium text-slate-300">
-            Copyrights 2019 - 2026 Online Legal India.
+            Copyrights 2016 - 2026 IndoFilings.
           </p>
           <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[12.5px] text-slate-300">
             <Link href="/refund-policy" className="transition hover:text-white hover:underline">
