@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { FaRocket, FaCity } from "react-icons/fa";
+import Link from "next/link";
 
 export default function BusinessComplianceSelector() {
   const [activeSelection, setActiveSelection] = useState<
@@ -35,13 +36,13 @@ export default function BusinessComplianceSelector() {
 
         <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
           {/* Proprietorship + Startup */}
-          <button
+          <Link
+            href="/business-compliance/startup"
             onClick={() => setActiveSelection("startup")}
             className={`flex items-center gap-3 px-6 py-3.5 rounded-full transition-all duration-300
-              ${
-                activeSelection === "startup"
-                  ? "bg-[#ffdcc2] shadow-md scale-105 ring-2 ring-orange-200"
-                  : "bg-[#feeadd] shadow-[0_4px_12px_rgba(0,0,0,0.04)] hover:bg-[#ffead1] hover:shadow-md"
+              ${activeSelection === "startup"
+                ? "bg-[#ffdcc2] shadow-md scale-105 ring-2 ring-orange-200"
+                : "bg-[#feeadd] shadow-[0_4px_12px_rgba(0,0,0,0.04)] hover:bg-[#ffead1] hover:shadow-md"
               }
             `}
           >
@@ -52,16 +53,16 @@ export default function BusinessComplianceSelector() {
             <span className="font-bold text-[14px] md:text-[15px] text-[#0f172a] tracking-tight">
               Proprietorship + Startup
             </span>
-          </button>
+          </Link>
 
           {/* Corporate + Government */}
-          <button
+          <Link
+            href="/business-compliance/corporate"
             onClick={() => setActiveSelection("corporate")}
             className={`flex items-center gap-3 px-6 py-3.5 rounded-full transition-all duration-300
-              ${
-                activeSelection === "corporate"
-                  ? "bg-[#ffdcc2] shadow-md scale-105 ring-2 ring-orange-200"
-                  : "bg-[#feeadd] shadow-[0_4px_12px_rgba(0,0,0,0.04)] hover:bg-[#ffead1] hover:shadow-md"
+              ${activeSelection === "corporate"
+                ? "bg-[#ffdcc2] shadow-md scale-105 ring-2 ring-orange-200"
+                : "bg-[#feeadd] shadow-[0_4px_12px_rgba(0,0,0,0.04)] hover:bg-[#ffead1] hover:shadow-md"
               }
             `}
           >
@@ -73,7 +74,7 @@ export default function BusinessComplianceSelector() {
             <span className="font-bold text-[14px] md:text-[15px] text-[#0f172a] tracking-tight">
               Corporate + Government
             </span>
-          </button>
+          </Link>
         </div>
       </section>
     </>
