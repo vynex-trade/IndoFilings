@@ -109,7 +109,7 @@ export default function TaxCompliancePage() {
         "Register for PF & ESIC to provide social security benefits to employees.",
       icon: <FaFileContract size={20} className="text-orange-500" />,
       iconBg: "bg-orange-50",
-      link: "/pf-esic-registration",
+      link: "/tax-accounting/pf-esic-registration",
     },
     {
       id: 2,
@@ -118,7 +118,7 @@ export default function TaxCompliancePage() {
         "Ensure timely PF & ESIC return filing to stay compliant.",
       icon: <FaUsers size={20} className="text-amber-700" />,
       iconBg: "bg-amber-50",
-      link: "/pf-esic-return-filing",
+      link: "/tax-accounting/pf-esic-return-filing",
     },
   ];
 
@@ -131,7 +131,7 @@ export default function TaxCompliancePage() {
         "Stay compliant with our hassle-free annual filing services.",
       icon: <FaClipboardCheck size={20} className="text-fuchsia-600" />,
       iconBg: "bg-fuchsia-50",
-      link: "/annual-compliance-filing",
+      link: "/tax-accounting/annual-compliance-filing",
     },
     {
       id: 2,
@@ -140,7 +140,7 @@ export default function TaxCompliancePage() {
         "Optimize your tax savings with exclusive tax planning services.",
       icon: <FaCalculator size={20} className="text-blue-500" />,
       iconBg: "bg-blue-50",
-      link: "/tax-planning-consultancy",
+      link: "/tax-accounting/tax-planning-consultancy",
     },
     {
       id: 3,
@@ -149,7 +149,7 @@ export default function TaxCompliancePage() {
         "Manage your finances effortlessly with our Online Bookkeeping services.",
       icon: <FaBook size={20} className="text-indigo-800" />,
       iconBg: "bg-indigo-50",
-      link: "/online-bookkeeping",
+      link: "/tax-accounting/online-bookkeeping",
     },
     {
       id: 4,
@@ -158,7 +158,7 @@ export default function TaxCompliancePage() {
         "Want 12A-80G-CSR Registration services for your NGO? Contact us.",
       icon: <FaHandHoldingUsd size={20} className="text-emerald-500" />,
       iconBg: "bg-emerald-50",
-      link: "/12a-80g-csr",
+      link: "/tax-accounting/12a-80g-csr",
     },
     {
       id: 5,
@@ -167,7 +167,7 @@ export default function TaxCompliancePage() {
         "Need a detailed Project Report for funding or business planning?",
       icon: <FaProjectDiagram size={20} className="text-pink-600" />,
       iconBg: "bg-pink-50",
-      link: "/project-report",
+      link: "/tax-accounting/project-report",
     },
     {
       id: 6,
@@ -176,7 +176,7 @@ export default function TaxCompliancePage() {
         "File your DPT-3 return on time to avoid penalties.",
       icon: <FaFileArchive size={20} className="text-amber-800" />,
       iconBg: "bg-amber-50",
-      link: "/dpt-3-filing",
+      link: "/tax-accounting/dpt-3-filing",
     },
     {
       id: 7,
@@ -185,7 +185,7 @@ export default function TaxCompliancePage() {
         "Register your NGO with NGO DARPAN for government recognition.",
       icon: <FaGlobe size={20} className="text-cyan-600" />,
       iconBg: "bg-cyan-50",
-      link: "/ngo-darpan-registration",
+      link: "/tax-accounting/ngo-darpan-registration",
     },
   ];
 
