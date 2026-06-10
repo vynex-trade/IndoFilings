@@ -5,8 +5,8 @@ import Footer from "./components/footer";
 import Providers from "./providers";
 
 export const metadata: Metadata = {
-  title: "My App",
-  description: "My new Next.js app",
+  title: "IndoFilings",
+  description: "IndoFilings is your trusted partner for hassle-free company registration and compliance services in Indonesia. We provide expert guidance and support to help you navigate the complexities of starting and running a business in Indonesia, ensuring a smooth and efficient process from start to finish.",
 };
 
 export default function RootLayout({
