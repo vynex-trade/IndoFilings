@@ -69,7 +69,7 @@ export default function TaxCompliancePage() {
         "Ensure compliance by filing your GSTR-9 Annual Return. Click here to file today.",
       icon: <FaCalendarCheck size={20} className="text-green-700" />,
       iconBg: "bg-green-50",
-      link: "/gstr-9-annual-filing",
+      link: "/tax-accounting/gstr-9-annual-filing",
     },
     {
       id: 6,
@@ -78,7 +78,7 @@ export default function TaxCompliancePage() {
         "Export without paying IGST by filing your GST LUT. Explore now to get our support.",
       icon: <FaFileExport size={20} className="text-blue-600" />,
       iconBg: "bg-blue-50",
-      link: "/gst-lut-filing",
+      link: "/tax-accounting/gst-lut-filing",
     },
     {
       id: 7,
@@ -87,7 +87,7 @@ export default function TaxCompliancePage() {
         "Generate your GST E-Way Bill effortlessly for smooth transportation.",
       icon: <FaTruckMoving size={20} className="text-red-500" />,
       iconBg: "bg-red-50",
-      link: "/gst-e-way-bill",
+      link: "/tax-accounting/gst-e-way-bill",
     },
     {
       id: 8,
@@ -96,7 +96,7 @@ export default function TaxCompliancePage() {
         "Accurate, timely filing to avoid penalties and ensure compliance.",
       icon: <FaFileInvoiceDollar size={20} className="text-cyan-500" />,
       iconBg: "bg-cyan-50",
-      link: "/tds-return-filing",
+      link: "/tax-accounting/tds-return-filing",
     },
   ];
 
