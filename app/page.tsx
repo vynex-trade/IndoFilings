@@ -38,7 +38,7 @@ const servicesData = [
   { title: 'Online Dispute Resolution', desc: 'Avoid courtroom stress by resolving disputes online with our professional ODR assistance, available anytime, anywhere.', img: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&q=80&w=400', link: '/odr' },
   { title: 'Virtual CXO Services', desc: 'Virtual CXO leadership support to help startups and MSMEs decide faster, scale with confidence, and avoid costly growth mistakes.', img: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=400', link: '/virtual-cxo' },
   { title: 'Corporates', desc: 'Strategic Advisory for Enterprises, Corporates & Institutional Businesses', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=400', link: '/corporates' },
-  { title: 'HR Compliance', desc: 'All-in-one HR software for payroll, compliance & team management. Automate tasks, save time & improve efficiency today.', img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400', link: '/hr-compliance' },
+  { title: 'HR Compliance', desc: 'All-in-one HR software for payroll, compliance & team management. Automate tasks, save time & improve efficiency today.', img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400', link: '/hr-payroll' },
   { title: 'GeM Registration', desc: 'GeM enables businesses to sell products and services directly to government departments through a secure online marketplace.', img: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=400', link: '/gem-registration' },
 ];
 
