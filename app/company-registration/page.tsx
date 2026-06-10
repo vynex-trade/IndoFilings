@@ -56,7 +56,7 @@ export default function CompanyRegistrationPage() {
         "Start your non-profit organization with Section 8 Company registration. To learn more, click here.",
       icon: <FaHandsHelping size={32} className="text-red-500" />,
       iconBg: "bg-red-50",
-      link: "/section-8-company-registration",
+      link: "/company-registration/section-8-company-registration",
     },
     {
       id: 6,
@@ -65,7 +65,7 @@ export default function CompanyRegistrationPage() {
         "Get your business registered from us and operate legally without hassle. Click to get started.",
       icon: <FaRegAddressCard size={32} className="text-orange-500" />,
       iconBg: "bg-orange-50",
-      link: "/business-registration-license",
+      link: "/company-registration/business-registration-license",
     },
     {
       id: 7,
@@ -74,7 +74,7 @@ export default function CompanyRegistrationPage() {
         "Start your Nidhi Company and build a secure financial institution. Explore now to learn more.",
       icon: <BsBank size={32} className="text-green-500" />,
       iconBg: "bg-green-50",
-      link: "/nidhi-company-registration",
+      link: "/company-registration/nidhi-company-registration",
     },
     {
       id: 8,
@@ -83,7 +83,7 @@ export default function CompanyRegistrationPage() {
         "Expand your business with Subsidiary Company Registration. Click here for seamless registration.",
       icon: <FaGlobe size={32} className="text-teal-500" />,
       iconBg: "bg-teal-50",
-      link: "/indian-subsidiary-registration",
+      link: "/company-registration/indian-subsidiary-registration",
     },
   ];
 
