@@ -73,82 +73,90 @@ export default function Home() {
       {/* HERO SECTION */}
       <section className="relative py-16 lg:py-24 overflow-hidden bg-gradient-to-br from-gray-50 to-blue-50">
         {/* Background Shape */}
-        <div className="hidden lg:block absolute top-0 right-0 bottom-0 w-[40%] bg-[#e6f0f7] rounded-l-full z-0"></div>
+        <div className="hidden lg:block absolute top-0 right-0 bottom-0 w-[40%] bg-[#e6f0f7] rounded-l-full"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
 
-            {/* Hero Left Content */}
+            {/* Left Content */}
             <div>
               <div className="border-l-4 border-[#f16622] pl-4 mb-6">
-                <span className="text-xl text-gray-800">India's 1st</span>
+                <span className="text-lg font-medium text-gray-700">
+                  Trusted Business Solutions Partner
+                </span>
               </div>
-              <h1 className="text-4xl lg:text-5xl font-bold text-[#111b40] leading-tight mb-6">
-                All-in-One Platform for Business Registration, Compliance, HR & Legal Tech
-              </h1>
-              <div className="w-20 h-1 bg-[#10a850] mb-10 rounded-full"></div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4">
-                <div>
-                  {heroListLeft.map((item, idx) => (
-                    <Link
-                      key={idx}
-                      href={item.link}
-                      className="flex items-center mb-4 group cursor-pointer hover:translate-x-1 transition-transform duration-200"
-                    >
-                      <div className="w-8 h-8 rounded bg-[#f16622] text-white flex items-center justify-center mr-3 flex-shrink-0 group-hover:bg-[#d9551a] transition-colors">
-                        {item.icon}
-                      </div>
-                      <span className="font-medium text-gray-800 text-sm group-hover:text-[#f16622] transition-colors">
-                        {item.text}
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-                <div>
-                  {heroListRight.map((item, idx) => (
-                    <Link
-                      key={idx}
-                      href={item.link}
-                      className="flex items-center mb-4 group cursor-pointer hover:translate-x-1 transition-transform duration-200"
-                    >
-                      <div className="w-8 h-8 rounded bg-[#f16622] text-white flex items-center justify-center mr-3 flex-shrink-0 group-hover:bg-[#d9551a] transition-colors">
-                        {item.icon}
-                      </div>
-                      <span className="font-medium text-gray-800 text-sm group-hover:text-[#f16622] transition-colors">
-                        {item.text}
-                      </span>
-                    </Link>
-                  ))}
-                </div>
+              <h1 className="text-4xl lg:text-6xl font-bold text-[#082b72] leading-tight mb-6">
+                All-in-One Platform for
+                <span className="text-[#ff6b00]"> Business Registration</span>,
+                Compliance, HR & Legal Services
+              </h1>
+
+              <div className="w-24 h-1 bg-[#10a850] rounded-full mb-8"></div>
+
+              <p className="text-lg text-gray-600 mb-10 leading-relaxed">
+                Simplify your business journey with expert assistance for Company
+                Registration, GST, Trademark, ISO Certification, Compliance,
+                Taxation, HR Services and Digital Solutions.
+              </p>
+
+              {/* Services */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-5 mb-10">
+                {[...heroListLeft, ...heroListRight].map((item, idx) => (
+                  <Link
+                    key={idx}
+                    href={item.link}
+                    className="flex items-center group hover:translate-x-1 transition-all duration-300"
+                  >
+                    <div className="w-10 h-10 rounded-lg bg-[#f16622] text-white flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-[#d9551a] group-hover:scale-110 transition-all duration-300">
+                      {item.icon}
+                    </div>
+
+                    <span className="font-medium text-[#111b40] group-hover:text-[#f16622] transition-colors">
+                      {item.text}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+
+              {/* Buttons */}
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href="/contact"
+                  className="bg-[#ff6b00] text-white px-8 py-3 rounded-xl font-semibold hover:bg-[#e55d00] transition-all duration-300"
+                >
+                  Get Started
+                </Link>
+
+                <Link
+                  href="/services"
+                  className="border-2 border-[#082b72] text-[#082b72] px-8 py-3 rounded-xl font-semibold hover:bg-[#082b72] hover:text-white transition-all duration-300"
+                >
+                  Explore Services
+                </Link>
               </div>
             </div>
 
-            {/* Hero Right Image & Cards */}
-            <div className="relative text-center mt-10 lg:mt-0">
-              <img
-                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=600&h=800"
-                alt="Brand Ambassador"
-                className="inline-block max-h-[550px] object-cover rounded-lg"
-              />
-
-              {/* Rating Floating Card */}
-              <div className="absolute top-[10%] left-0 lg:-left-10 bg-white p-4 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.1)] z-20">
-                <div className="flex items-center mb-1">
-                  <span className="text-2xl font-bold text-[#f16622] mr-2">4.5</span>
-                  <FaStar className="text-[#f16622] text-xl" />
-                </div>
-                <p className="text-xs text-gray-600 m-0 leading-tight">
-                  Our Ratings from 6000+<br />customers on <span className="font-bold text-[#4285F4]">Google</span>
-                </p>
+            {/* Right Side Image */}
+            <div className="relative">
+              <div className="bg-white p-4 rounded-3xl shadow-2xl">
+                <img
+                  src="/indo.jpeg"
+                  alt="Indo Filings"
+                  className="w-full rounded-2xl"
+                />
               </div>
 
-              {/* Quote Floating Card */}
-              <div className="absolute bottom-[10%] right-0 lg:-right-10 bg-white p-4 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.1)] z-20 max-w-[220px] text-left">
-                <FaQuoteLeft className="text-[#10a850] text-xl mb-2" />
-                <p className="text-xs font-medium text-gray-800 leading-relaxed">
-                  We welcome Former Indian Captain & BCCI President Sourav Ganguly as our Brand Ambassador. <FaQuoteRight className="inline text-[#10a850]" />
-                </p>
+              {/* Floating Card 1 */}
+              <div className="absolute -top-5 -left-5 bg-white rounded-xl shadow-lg px-5 py-3">
+                <h4 className="text-2xl font-bold text-[#ff6b00]">100+</h4>
+                <p className="text-sm text-gray-600">Business Services</p>
+              </div>
+
+              {/* Floating Card 2 */}
+              <div className="absolute -bottom-5 -right-5 bg-white rounded-xl shadow-lg px-5 py-3">
+                <h4 className="text-2xl font-bold text-[#082b72]">PAN India</h4>
+                <p className="text-sm text-gray-600">Client Support</p>
               </div>
             </div>
 
@@ -159,38 +167,117 @@ export default function Home() {
       {/* ABOUT SECTION */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row items-center gap-12 mb-12">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
 
-            <div className="w-full lg:w-5/12 relative">
-              <div className="bg-[#e4edf4] p-0 rounded-[20px] overflow-hidden text-center">
+            {/* Left Side Image */}
+            <div>
+              <div className="bg-[#f8fafc] rounded-3xl p-4 shadow-sm border border-gray-100 hover:shadow-2xl transition-all duration-500">
                 <img
-                  src="https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&q=80&w=500&h=550"
-                  alt="Mr. Saurabh Shukla"
-                  className="w-full object-cover rounded-[20px]"
+                  src="/indo.jpeg"
+                  alt="Indo Filings"
+                  className="w-full rounded-2xl"
                 />
               </div>
-              <div className="absolute bottom-6 right-2 bg-white p-4 rounded-xl shadow-lg w-48 border border-gray-100">
-                <FaQuoteLeft className="text-[#10a850] mb-1 text-sm" />
-                <h6 className="text-[#111b40] font-bold text-sm mb-1">Mr. Saurabh Shukla</h6>
-                <p className="text-gray-500 text-[10px] leading-tight">is the celebrity face of our brand. <FaQuoteRight className="inline text-[#10a850] text-[10px]" /></p>
+            </div>
+
+            {/* Right Side Content */}
+            <div>
+              <span className="inline-block px-4 py-2 rounded-full bg-orange-100 text-[#ff6b00] font-semibold text-sm mb-4">
+                About Us
+              </span>
+
+              <h2 className="text-4xl lg:text-5xl font-bold text-[#082b72] mb-6">
+                About Indo Filings
+              </h2>
+
+              <p className="text-gray-700 text-lg leading-relaxed mb-5">
+                <span className="font-semibold text-[#ff6b00]">
+                  Indo Filings
+                </span>{" "}
+                is your trusted partner for business registration, compliance,
+                taxation, legal services, HR solutions, and digital growth.
+                We provide end-to-end support for startups, entrepreneurs,
+                MSMEs, and established businesses across India.
+              </p>
+
+              <p className="text-gray-600 leading-relaxed mb-8">
+                Our team of experienced professionals helps businesses stay
+                compliant, grow efficiently, and focus on what matters most —
+                building successful organizations. From company incorporation
+                and GST registration to trademark protection and digital
+                solutions, we deliver reliable services under one roof.
+              </p>
+
+              {/* Services Grid */}
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+
+                {[
+                  "Company Registration",
+                  "GST Registration",
+                  "Import Export Code",
+                  "FSSAI Registration",
+                  "Trademark Registration",
+                  "ISO Registration",
+                  "Virtual CXO Services",
+                  "HR Compliance",
+                  "Website Development",
+                  "Android Development",
+                  "SEO Optimization",
+                  "Graphic Designing",
+                ].map((service, index) => (
+                  <div
+                    key={index}
+                    className="
+                relative
+                overflow-hidden
+                border border-gray-200
+                rounded-xl
+                p-4
+                bg-white
+                transition-all
+                duration-500
+                hover:-translate-y-2
+                hover:shadow-xl
+                hover:border-[#ff6b00]
+                group
+                before:absolute
+                before:top-0
+                before:left-0
+                before:h-1
+                before:w-0
+                before:bg-[#ff6b00]
+                before:transition-all
+                before:duration-500
+                hover:before:w-full
+              "
+                  >
+                    <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mb-3 transition-all duration-300 group-hover:bg-[#ff6b00]">
+                      <span className="text-[#082b72] font-bold group-hover:text-white">
+                        ✓
+                      </span>
+                    </div>
+
+                    <h4 className="text-sm font-medium text-[#082b72] transition-colors duration-300 group-hover:text-[#ff6b00]">
+                      {service}
+                    </h4>
+                  </div>
+                ))}
+              </div>
+
+              {/* Highlight Box */}
+              <div className="mt-8 bg-gradient-to-r from-[#082b72] to-[#0f4ca6] rounded-2xl p-6 text-white shadow-xl">
+                <h3 className="text-xl font-bold mb-2">
+                  All-in-One Platform for Business Growth
+                </h3>
+
+                <p className="text-blue-100 leading-relaxed">
+                  Business Registration, Compliance, Taxation, HR Solutions,
+                  Legal Services, IT Solutions, Digital Marketing and much more —
+                  all under one roof.
+                </p>
               </div>
             </div>
 
-            <div className="w-full lg:w-7/12">
-              <h2 className="text-3xl font-bold text-[#111b40] mb-6">About Online Legal India</h2>
-              <p className="text-gray-700 text-lg mb-4 leading-relaxed">
-                <span className="text-[#f16622] font-bold">Online Legal India</span> is a brand of FastInfo Legal Services Pvt. Ltd., registered under the Companies Act, 2013.
-              </p>
-              <p className="text-gray-600 text-base leading-relaxed">
-                Our core panel consists of diligent professionals, all under one roof. They provide solution to all the individual, business person, corporate body and others for the issues faced by them in their everyday life.
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-[#fdf5ea] border-l-4 border-[#f16622] rounded-lg p-6 md:p-8 text-center shadow-sm">
-            <p className="text-gray-800 font-medium md:text-lg">
-              Online Legal India is India's 1st & only all-in-one platform, that provides business registration, licences, GST & tax, regulatory compliance, ODR-enabled legal support, audit, HR & payroll, all under one roof.
-            </p>
           </div>
         </div>
       </section>
@@ -251,67 +338,117 @@ export default function Home() {
         </div>
       </section>
 
-      {/* MEDIA SECTION */}
+
+      {/* WHY CHOOSE US SECTION */}
+      {/* WHY BUSINESSES TRUST INDO FILINGS */}
       <section className="py-20 bg-[#f2f4f7]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
 
-            {/* Founder Card */}
-            <div className="col-span-1">
-              <div className="bg-white rounded-xl shadow-sm overflow-hidden h-full flex flex-col">
-                <img
-                  src="https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?auto=format&fit=crop&q=80&w=400"
-                  alt="Rajesh Kewat"
-                  className="w-full h-[350px] object-cover object-top"
-                />
-                <div className="p-6 text-center flex-grow flex flex-col justify-center">
-                  <h4 className="font-bold text-2xl text-[#111b40] mb-3">Rajesh Kewat</h4>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    The Founder & CEO of Online Legal India, Mr. Rajesh Kewat actually had the courage to sacrifice his well paid job at Oxford and turn his startup dream into a multi crore turnover company.
-                  </p>
-                </div>
-              </div>
-            </div>
+          {/* Section Heading */}
+          <div className="text-center mb-14">
+            <span className="inline-block px-4 py-2 bg-orange-100 text-[#ff6b00] rounded-full font-medium mb-4">
+              Why Choose Us
+            </span>
 
-            {/* Media Grid */}
-            <div className="col-span-1 lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <h2 className="text-4xl lg:text-5xl font-bold text-[#082b72] mb-4">
+              Why Businesses Trust Indo Filings
+            </h2>
 
-              <div className="bg-white rounded-xl p-6 shadow-sm flex flex-col items-center justify-center text-center hover:-translate-y-1 transition duration-300">
-                <h3 className="font-bold text-2xl text-[#d32f2f] mb-3">ZEE<span className="text-gray-800">NEWS</span></h3>
-                <p className="text-xs text-gray-500">Meet Rajesh Kewat, The Small Town Entrepreneur Behind Online Legal India's Success</p>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm flex flex-col items-center justify-center text-center hover:-translate-y-1 transition duration-300">
-                <h3 className="font-bold text-3xl text-red-600 mb-3">TED<sup className="text-sm">x</sup></h3>
-                <p className="text-xs text-gray-500">From Rs. 2000 Salary to Multi-Crore Turnover Company | Rajesh Kewat | TEDxPradhikaran.</p>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm flex flex-col items-center justify-center text-center hover:-translate-y-1 transition duration-300">
-                <h3 className="font-bold text-2xl text-[#004274] font-serif mb-3">Forbes <sub className="text-[10px] text-gray-500 font-sans">INDIA</sub></h3>
-                <p className="text-xs text-gray-500">Mr. Rajesh Kewat getting featured in the special edition of Forbes India Magazine - Showstoppers 2022-23</p>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm flex flex-col items-center justify-center text-center hover:-translate-y-1 transition duration-300">
-                <h4 className="font-bold text-xl text-[#d32f2f] mb-3">asia one</h4>
-                <p className="text-xs text-gray-500">Rajesh Kewat, the MD of FastInfo Legal Services Pvt Ltd, owns a movie-like story; a man who lost everything for his love & attained great success within just 500 days with his innovative business.</p>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm flex flex-col items-center justify-center text-center hover:-translate-y-1 transition duration-300">
-                <h3 className="font-bold text-2xl text-[#005aaa] mb-3">mid-day</h3>
-                <p className="text-xs text-gray-500">Rajesh Kewat Conferred with Businessman of the Year Award at Brands Impact NFA 2022.</p>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm flex flex-col items-center justify-center text-center hover:-translate-y-1 transition duration-300">
-                <h5 className="font-bold text-lg text-gray-800 mb-4">Past Experiences</h5>
-                <div className="flex justify-around w-full items-center">
-                  <span className="text-[11px] font-bold text-[#002147]">OXFORD</span>
-                  <span className="text-[11px] font-bold text-[#005a9c]">Pearson</span>
-                  <span className="text-[11px] font-bold text-[#00a650]">Educomp</span>
-                </div>
-              </div>
-
-            </div>
+            <p className="text-gray-600 max-w-3xl mx-auto text-lg">
+              We simplify legal, tax, compliance and business growth services
+              with expert guidance, transparent pricing and dedicated support.
+            </p>
           </div>
+
+          {/* Cards */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            {[
+              {
+                title: "Expert Professionals",
+                desc: "Work with experienced Chartered Accountants, Company Secretaries, legal experts and business consultants.",
+                icon: "👨‍💼",
+              },
+              {
+                title: "Fast Processing",
+                desc: "Quick documentation, timely filings and efficient service delivery for all business requirements.",
+                icon: "⚡",
+              },
+              {
+                title: "Transparent Pricing",
+                desc: "No hidden charges. Clear pricing and complete visibility throughout the process.",
+                icon: "💰",
+              },
+              {
+                title: "Dedicated Support",
+                desc: "Get personalized assistance from consultation to completion with our expert team.",
+                icon: "🤝",
+              },
+              {
+                title: "One Platform, Many Services",
+                desc: "Registration, GST, Trademark, ISO, Compliance, HR, IT and Digital Marketing solutions under one roof.",
+                icon: "🏢",
+              },
+              {
+                title: "PAN India Reach",
+                desc: "Serving startups, MSMEs and enterprises across India through digital-first services.",
+                icon: "🌍",
+              },
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="
+            group
+            relative
+            overflow-hidden
+            bg-white
+            p-8
+            rounded-2xl
+            shadow-sm
+            border border-gray-100
+            transition-all
+            duration-500
+            hover:-translate-y-3
+            hover:shadow-2xl
+            hover:border-[#ff6b00]
+          "
+              >
+                {/* Animated Top Border */}
+                <div className="absolute top-0 left-0 h-1 w-0 bg-[#ff6b00] transition-all duration-500 group-hover:w-full"></div>
+
+                {/* Icon */}
+                <div className="w-16 h-16 rounded-2xl bg-orange-100 flex items-center justify-center text-3xl mb-6 transition-all duration-300 group-hover:bg-[#ff6b00] group-hover:scale-110">
+                  <span className="group-hover:scale-110 transition-transform duration-300">
+                    {item.icon}
+                  </span>
+                </div>
+
+                {/* Title */}
+                <h3 className="text-xl font-bold text-[#082b72] mb-4 transition-colors duration-300 group-hover:text-[#ff6b00]">
+                  {item.title}
+                </h3>
+
+                {/* Description */}
+                <p className="text-gray-600 leading-relaxed">
+                  {item.desc}
+                </p>
+
+                {/* Hover Background Effect */}
+                <div className="absolute -bottom-16 -right-16 w-32 h-32 bg-orange-50 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom CTA */}
+          <div className="mt-16 text-center">
+            <Link
+              href="/contact"
+              className="inline-flex items-center bg-[#ff6b00] text-white px-8 py-4 rounded-xl font-semibold hover:bg-[#e55d00] transition-all duration-300 hover:shadow-lg"
+            >
+              Start Your Business Journey
+            </Link>
+          </div>
+
         </div>
       </section>
 
