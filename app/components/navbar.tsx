@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
@@ -25,12 +26,23 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white shadow-sm">
-      <div className="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between px-6 lg:px-16">
+      <div className="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between px-4 sm:px-6 lg:px-16">
         {/* Logo */}
-        <Link href="/" className="flex items-center">
+        <Link href="/" className="flex items-center gap-2">
+          <Image
+            src="/Logo.png"
+            alt="Indo Filings Logo"
+            width={100}
+            height={100}
+            priority
+          // className="sm:h-10"
+          />
+
           <h1 className="font-bold leading-none whitespace-nowrap">
-            <span className="text-lg sm:text-2xl md:text-3xl">Indo</span>
-            <span className="text-lg sm:text-2xl md:text-3xl text-[#3B82F6]">
+            <span className="text-lg sm:text-2xl md:text-3xl text-[#FF6B00]">
+              Indo
+            </span>
+            <span className="text-lg sm:text-2xl md:text-3xl text-[#123C8C]">
               Filings
             </span>
           </h1>
@@ -158,7 +170,10 @@ export default function Navbar() {
                     <Link
                       key={service.href}
                       href={service.href}
-                      onClick={() => setOpen(false)}
+                      onClick={() => {
+                        setOpen(false);
+                        setMobileServicesOpen(false);
+                      }}
                       className={`text-[14px] font-medium transition ${pathname === service.href
                         ? "text-[#0B1F4D]"
                         : "text-slate-600 hover:text-[#0B1F4D]"
