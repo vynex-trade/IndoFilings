@@ -171,7 +171,20 @@ export default function Footer() {
             </div>
           </div>
 
+          {/* Right: Quick Links + Grievance */}
+          <div className="flex flex-col gap-4 lg:items-end">
 
+
+            <p className="text-[13px] text-slate-300">
+              For any grievance mail to:{" "}
+              <a
+                href="mailto:complain@fastinfo.com"
+                className="font-medium text-white hover:underline"
+              >
+                xyz@gmail.com
+              </a>
+            </p>
+          </div>
         </div>
       </div>
 
