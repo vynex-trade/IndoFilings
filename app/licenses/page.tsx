@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   FaFileSignature,
   FaSyncAlt,
@@ -18,6 +19,7 @@ const services = [
     description:
       "Get FSSAI Registered Easily for your food business. Click here to learn more.",
     color: "text-sky-400",
+    link: "/licenses/fssai-registration",
   },
   {
     icon: <FaSyncAlt />,
@@ -25,6 +27,7 @@ const services = [
     description:
       "Review your FSSAI License / Registration seamlessly. Explore now to learn more.",
     color: "text-green-500",
+    link: "/licenses/fssai-renewal",
   },
   {
     icon: <FaEdit />,
@@ -32,6 +35,7 @@ const services = [
     description:
       "Modify your FSSAI license to avoid legal complications. Click to learn more.",
     color: "text-purple-500",
+    link: "/licenses/fssai-modification",
   },
   {
     icon: <FaFileImport />,
@@ -39,6 +43,7 @@ const services = [
     description:
       "Get importer-exporter code to ensure legal compliance. Learn more here.",
     color: "text-pink-500",
+    link: "/licenses/import-export-code",
   },
   {
     icon: <FaExchangeAlt />,
@@ -46,6 +51,7 @@ const services = [
     description:
       "Need Importer Exporter Code Modification? Get seamless service with us.",
     color: "text-orange-500",
+    link: "/licenses/import-export-code-modification",
   },
   {
     icon: <FaClipboardList />,
@@ -53,6 +59,7 @@ const services = [
     description:
       "If your FSSAI Annual Return Filing is due, contact us today.",
     color: "text-lime-500",
+    link: "/licenses/fssai-annual-return-filing",
   },
   {
     icon: <FaCertificate />,
@@ -60,6 +67,7 @@ const services = [
     description:
       "Increase your brand value with ISO Registration. Click to learn more.",
     color: "text-indigo-500",
+    link: "/licenses/iso-registration",
   },
 ];
 
@@ -90,9 +98,10 @@ export default function LicensesSection() {
       <div className="max-w-6xl mx-auto px-4 md:px-6 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, index) => (
-            <div
+            <Link
               key={index}
-              className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col"
+              href={service.link}
+              className="group bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col"
             >
               <div className={`text-3xl mb-5 ${service.color}`}>
                 {service.icon}
@@ -106,11 +115,11 @@ export default function LicensesSection() {
                 {service.description}
               </p>
 
-              <button className="mt-6 flex items-center gap-2 text-orange-500 font-semibold group">
+              <div className="mt-6 flex items-center gap-2 text-orange-500 font-semibold">
                 Apply Now
                 <FaArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
-              </button>
-            </div>
+              </div>
+            </Link>
           ))}
         </div>
       </div>
