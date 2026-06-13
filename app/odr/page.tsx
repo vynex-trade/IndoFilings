@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   FaUsers,
   FaUserTie,
@@ -16,21 +17,25 @@ export default function ChooseYourService() {
       id: "consumer",
       title: "Consumer Dispute",
       icon: <FaUsers />,
+      link: "/consumer-dispute",
     },
     {
       id: "labour",
       title: "Labour Dispute",
       icon: <FaUserTie />,
+      link: "/odr/labour-dispute",
     },
     {
       id: "insurance",
       title: "Insurance Dispute",
       icon: <FaFileInvoiceDollar />,
+      link: "/odr/insurance-dispute",
     },
     {
       id: "other",
       title: "Other Legal Dispute",
       icon: <FaBalanceScale />,
+      link: "/odr/other-legal-dispute",
     },
   ];
 
@@ -64,26 +69,28 @@ export default function ChooseYourService() {
           </h2>
 
           <div className="flex flex-wrap justify-center gap-6">
-            {services.map((service) => (
-              <button
-                key={service.id}
-                onClick={() => setActiveService(service.id)}
-                className={`flex items-center gap-3 px-8 py-5 rounded-full font-semibold transition-all duration-300 shadow-md
-                  ${
-                    activeService === service.id
+            {services.map((service) => {
+              const Icon = service.icon.type;
+
+              return (
+                <Link
+                  key={service.id}
+                  href={service.link}
+                  onClick={() => setActiveService(service.id)}
+                  className={`flex items-center gap-3 px-8 py-5 rounded-full font-semibold transition-all duration-300 shadow-md
+                    ${activeService === service.id
                       ? "bg-[#f5d8c2] scale-105 shadow-lg"
                       : "bg-[#f8dcc8] hover:bg-[#f5d8c2] hover:scale-105"
-                  }`}
-              >
-                <span className="text-lg text-[#111179]">
-                  {service.icon}
-                </span>
+                    }`}
+                >
+                  <Icon className="text-lg text-[#111179]" />
 
-                <span className="text-[#0f172a] text-sm md:text-base">
-                  {service.title}
-                </span>
-              </button>
-            ))}
+                  <span className="text-[#0f172a] text-sm md:text-base">
+                    {service.title}
+                  </span>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>
