@@ -48,9 +48,9 @@ export default function Footer() {
       title: "GST",
       links: [
         { name: "GST Registration", href: "/gst-registration" },
-        { name: "GST Filing", href: "/services/gst-filing" },
-        { name: "GST Modification", href: "/services/gst-modification" },
-        { name: "GST Cancellation", href: "/services/gst-cancellation" },
+        { name: "GST Filing", href: "/tax-accounting/gst-return-filing" },
+        { name: "GST Modification", href: "/tax-accounting/gst-modification" },
+        { name: "GST Cancellation", href: "/tax-accounting/gst-cancellation" },
       ],
     },
     {
