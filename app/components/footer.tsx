@@ -171,48 +171,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Right: Quick Links + Grievance */}
-          <div className="flex flex-col gap-4 lg:items-end">
-            <nav className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[13.5px] text-slate-300">
-              <Link href="/careers" className="transition hover:text-white">
-                Careers
-              </Link>
-              <span className="text-slate-400">|</span>
-              <Link href="/contact" className="transition hover:text-white">
-                Contact Us
-              </Link>
-              <span className="text-slate-400">|</span>
-              <Link href="/blogs" className="transition hover:text-white">
-                Blogs
-              </Link>
-              <span className="text-slate-400">|</span>
-              <Link href="/news" className="transition hover:text-white">
-                News
-              </Link>
-              <span className="text-slate-400">|</span>
-              <Link href="/about" className="transition hover:text-white">
-                About Us
-              </Link>
-              <span className="text-slate-400">|</span>
-              <Link href="/press-release" className="transition hover:text-white">
-                Press Release
-              </Link>
-              <span className="text-slate-400">|</span>
-              <Link href="/event" className="transition hover:text-white">
-                Event
-              </Link>
-            </nav>
 
-            <p className="text-[13px] text-slate-300">
-              For any grievance mail to:{" "}
-              <a
-                href="mailto:complain@fastinfo.com"
-                className="font-medium text-white hover:underline"
-              >
-                xyz@gmail.com
-              </a>
-            </p>
-          </div>
         </div>
       </div>
 
