@@ -17,37 +17,37 @@ export default function Footer() {
     {
       title: "Business Registration",
       links: [
-        { name: "Private Limited Company", href: "/services/private-limited" },
-        { name: "Limited Liability Partnership", href: "/services/llp" },
-        { name: "One Person Company", href: "/services/opc" },
-        { name: "Public limited Company", href: "/services/public-limited" },
-        { name: "Section 8 Company", href: "/services/section-8" },
+        { name: "Private Limited Company", href: "/company-registration/private-company-registration" },
+        { name: "Limited Liability Partnership", href: "/company-registration/llp-registration" },
+        { name: "One Person Company", href: "/company-registration/one-person-company-registration" },
+        { name: "Public limited Company", href: "/company-registration/private-company-registration" },
+        { name: "Section 8 Company", href: "/company-registration/section-8-company-registration" },
       ],
     },
     {
       title: "Licenses",
       links: [
-        { name: "FSSAI [Food License]", href: "/services/fssai" },
-        { name: "FSSAI Renewal", href: "/services/fssai-renewal" },
-        { name: "IEC [Import/Export Code]", href: "/services/iec" },
-        { name: "IEC Certificate Modification", href: "/services/iec-modification" },
-        { name: "BIS Certificate", href: "/services/bis" },
+        { name: "FSSAI [Food License]", href: "/licenses/fssai-registration" },
+        { name: "FSSAI Renewal", href: "/licenses/fssai-renewal" },
+        { name: "IEC [Import/Export Code]", href: "/licenses/import-export-code" },
+        { name: "IEC Certificate Modification", href: "/licenses/import-export-code-modification" },
+        { name: "BIS Certificate", href: "/bis" },
       ],
     },
     {
       title: "Registration",
       links: [
-        { name: "TM Registration", href: "/services/tm-registration" },
-        { name: "TM Objection", href: "/services/tm-objection" },
-        { name: "TM Renewal", href: "/services/tm-renewal" },
-        { name: "Copyright Registration", href: "/services/copyright" },
-        { name: "ISO Registration", href: "/services/iso" },
+        { name: "TM Registration", href: "/Trademark/registration" },
+        { name: "TM Objection", href: "/Trademark/objection" },
+        { name: "TM Renewal", href: "/Trademark/renewal" },
+        { name: "Copyright Registration", href: "Trademark/copyright" },
+        { name: "ISO Registration", href: "/iso-certification" },
       ],
     },
     {
       title: "GST",
       links: [
-        { name: "GST Registration", href: "/services/gst-registration" },
+        { name: "GST Registration", href: "/gst-registration" },
         { name: "GST Filing", href: "/services/gst-filing" },
         { name: "GST Modification", href: "/services/gst-modification" },
         { name: "GST Cancellation", href: "/services/gst-cancellation" },
@@ -56,9 +56,9 @@ export default function Footer() {
     {
       title: "Accounting & Tax",
       links: [
-        { name: "PF-ESIC Registration", href: "/services/pf-esic" },
-        { name: "PF-ESIC Return Filing", href: "/services/pf-esic-return" },
-        { name: "Online Bookkeeping", href: "/services/bookkeeping" },
+        { name: "PF-ESIC Registration", href: "/tax-accounting/pf-esic-registration" },
+        { name: "PF-ESIC Return Filing", href: "/tax-accounting/pf-esic-return-filing" },
+        { name: "Online Bookkeeping", href: "/tax-accounting/online-bookkeeping" },
       ],
     },
   ]
