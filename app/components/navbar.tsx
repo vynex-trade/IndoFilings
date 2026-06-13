@@ -91,15 +91,6 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Career */}
-          <a
-            href="https://www.fastinfo.com/career/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[15px] font-medium text-slate-700 transition hover:text-[#0B1F4D]"
-          >
-            Career
-          </a>
 
           {/* About */}
           <Link
@@ -185,15 +176,6 @@ export default function Navbar() {
                 </div>
               )}
             </div>
-
-            <a
-              href="https://www.fastinfo.com/career/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[15px] font-medium text-slate-700"
-            >
-              Career
-            </a>
 
             <Link
               href="/about"
