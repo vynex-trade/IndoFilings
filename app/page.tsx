@@ -9,7 +9,6 @@ import {
 } from 'react-icons/fa';
 import WhyUsData from './components/whyUsData';
 
-
 // --- DATA ARRAYS ---
 const heroListLeft = [
   { icon: <FaFileAlt />, text: 'Company Registration', link: '/company-registration' },
@@ -56,15 +55,12 @@ const whyUsData = [
 
 // --- COMPONENTS ---
 
-// FIX: Added Type for props '{ title: string }'
 const SectionHeading = ({ title }: { title: string }) => (
   <div className="text-center mb-12">
     <h2 className="text-3xl font-bold text-[#111b40] mb-2">{title}</h2>
     <div className="w-10 h-1 bg-[#10a850] mx-auto rounded-full"></div>
   </div>
 );
-
-
 
 export default function Home() {
   return (
@@ -112,7 +108,6 @@ export default function Home() {
               >
                 Get Started
               </Link>
-
             </div>
 
             {/* Services Grid */}
@@ -161,7 +156,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ABOUT SECTION */}
+      {/* IT SERVICES SECTION */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -171,8 +166,8 @@ export default function Home() {
               <div className="bg-[#f8fafc] rounded-3xl p-4 shadow-sm border border-gray-100 hover:shadow-2xl transition-all duration-500">
                 <img
                   src="/indo.jpeg"
-                  alt="Indo Filings"
-                  className="w-full rounded-2xl"
+                  alt="Indo Filings IT Services"
+                  className="w-full rounded-2xl object-cover"
                 />
               </div>
             </div>
@@ -180,101 +175,104 @@ export default function Home() {
             {/* Right Side Content */}
             <div>
               <span className="inline-block px-4 py-2 rounded-full bg-orange-100 text-[#ff6b00] font-semibold text-sm mb-4">
-                About Us
+                IT Solutions
               </span>
 
               <h2 className="text-4xl lg:text-5xl font-bold text-[#082b72] mb-6">
-                About Indo Filings
+                Transform Your Business with Technology
               </h2>
 
               <p className="text-gray-700 text-lg leading-relaxed mb-5">
                 <span className="font-semibold text-[#ff6b00]">
-                  Indo Filings
+                  Indo Filings IT Solutions
                 </span>{" "}
-                is your trusted partner for business registration, compliance,
-                taxation, legal services, HR solutions, and digital growth.
-                We provide end-to-end support for startups, entrepreneurs,
-                MSMEs, and established businesses across India.
+                delivers innovative digital services that help businesses
+                establish a strong online presence, automate operations,
+                and accelerate growth through modern technology.
               </p>
 
               <p className="text-gray-600 leading-relaxed mb-8">
-                Our team of experienced professionals helps businesses stay
-                compliant, grow efficiently, and focus on what matters most —
-                building successful organizations. From company incorporation
-                and GST registration to trademark protection and digital
-                solutions, we deliver reliable services under one roof.
+                From custom websites and mobile applications to digital
+                marketing, SEO, cloud solutions, and branding, our team
+                provides end-to-end technology services tailored to your
+                business needs.
               </p>
 
-              {/* Services Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-
+              {/* Services Grid (Updated with Links) */}
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
                 {[
-                  "Company Registration",
-                  "GST Registration",
-                  "Import Export Code",
-                  "FSSAI Registration",
-                  "Trademark Registration",
-                  "ISO Registration",
-                  "Virtual CXO Services",
-                  "HR Compliance",
-                  "Website Development",
-                  "Android Development",
-                  "SEO Optimization",
-                  "Graphic Designing",
+                  { name: "Website Development", link: "/it-services/WebDevelopment" },
+                  { name: "Android Apps", link: "/it-services/AndroidApps" },
+                  { name: "SEO Services", link: "/it-services/SeoServices" },
+                  { name: "Digital Marketing", link: "/it-services/DigitalMarketing" },
+                  { name: "Graphic Design", link: "/it-services/GraphicDesign" },
+                  { name: "Social Media", link: "/it-services/SocialMedia" }
                 ].map((service, index) => (
-                  <div
+                  <Link
+                    href={service.link}
                     key={index}
-                    className="
-                relative
-                overflow-hidden
-                border border-gray-200
-                rounded-xl
-                p-4
-                bg-white
-                transition-all
-                duration-500
-                hover:-translate-y-2
-                hover:shadow-xl
-                hover:border-[#ff6b00]
-                group
-                before:absolute
-                before:top-0
-                before:left-0
-                before:h-1
-                before:w-0
-                before:bg-[#ff6b00]
-                before:transition-all
-                before:duration-500
-                hover:before:w-full
-              "
+                    className="block group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-[#ff6b00] hover:shadow-xl"
                   >
-                    <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mb-3 transition-all duration-300 group-hover:bg-[#ff6b00]">
-                      <span className="text-[#082b72] font-bold group-hover:text-white">
-                        ✓
-                      </span>
+                    {/* Top Accent Line */}
+                    <div className="absolute top-0 left-0 h-1 w-0 bg-[#ff6b00] transition-all duration-500 group-hover:w-full"></div>
+
+                    {/* Icon */}
+                    <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 transition-all duration-300 group-hover:bg-[#ff6b00]">
+                      <svg
+                        className="h-6 w-6 text-[#082b72] group-hover:text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
                     </div>
 
-                    <h4 className="text-sm font-medium text-[#082b72] transition-colors duration-300 group-hover:text-[#ff6b00]">
-                      {service}
+                    {/* Service Name */}
+                    <h4 className="text-sm font-semibold text-[#082b72] transition-colors duration-300 group-hover:text-[#ff6b00]">
+                      {service.name}
                     </h4>
-                  </div>
+                  </Link>
                 ))}
               </div>
 
               {/* Highlight Box */}
-              <div className="mt-8 bg-gradient-to-r from-[#082b72] to-[#0f4ca6] rounded-2xl p-6 text-white shadow-xl">
-                <h3 className="text-xl font-bold mb-2">
-                  All-in-One Platform for Business Growth
+              <div className="rounded-3xl bg-gradient-to-r from-[#082b72] via-[#0f4ca6] to-[#1d6ee8] p-8 text-white shadow-2xl">
+                <h3 className="mb-3 text-2xl font-bold">
+                  Complete IT & Digital Solutions
                 </h3>
 
-                <p className="text-blue-100 leading-relaxed">
-                  Business Registration, Compliance, Taxation, HR Solutions,
-                  Legal Services, IT Solutions, Digital Marketing and much more —
-                  all under one roof.
+                <p className="leading-relaxed text-blue-100">
+                  We help businesses build a powerful digital presence
+                  through website development, mobile applications,
+                  software solutions, cloud services, branding, SEO,
+                  and digital marketing.
                 </p>
+
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <span className="rounded-full bg-white/20 px-4 py-2 text-sm">
+                    Web Development
+                  </span>
+                  <span className="rounded-full bg-white/20 px-4 py-2 text-sm">
+                    Mobile Apps
+                  </span>
+                  <span className="rounded-full bg-white/20 px-4 py-2 text-sm">
+                    SEO
+                  </span>
+                  <span className="rounded-full bg-white/20 px-4 py-2 text-sm">
+                    Digital Marketing
+                  </span>
+                  <span className="rounded-full bg-white/20 px-4 py-2 text-sm">
+                    Social Media
+                  </span>
+                </div>
               </div>
             </div>
-
           </div>
         </div>
       </section>
@@ -313,9 +311,7 @@ export default function Home() {
         </div>
       </section>
 
-
       {/* WHY CHOOSE US SECTION */}
-      {/* WHY BUSINESSES TRUST INDO FILINGS */}
       <section className="py-20 bg-[#f2f4f7]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -372,21 +368,7 @@ export default function Home() {
             ].map((item, index) => (
               <div
                 key={index}
-                className="
-            group
-            relative
-            overflow-hidden
-            bg-white
-            p-8
-            rounded-2xl
-            shadow-sm
-            border border-gray-100
-            transition-all
-            duration-500
-            hover:-translate-y-3
-            hover:shadow-2xl
-            hover:border-[#ff6b00]
-          "
+                className="group relative overflow-hidden bg-white p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:border-[#ff6b00]"
               >
                 {/* Animated Top Border */}
                 <div className="absolute top-0 left-0 h-1 w-0 bg-[#ff6b00] transition-all duration-500 group-hover:w-full"></div>
