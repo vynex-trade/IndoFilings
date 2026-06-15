@@ -145,32 +145,7 @@ export default function Footer() {
               })}
             </div>
 
-            {/* App Store Buttons */}
-            <div className="mt-2 flex flex-wrap items-center gap-3">
-              {/* Google Play */}
-              <a
-                href="#"
-                className="flex items-center gap-2 rounded-md bg-black px-4 py-2 text-white transition hover:bg-gray-800"
-              >
-                <FaGooglePlay size={22} />
-                <div className="flex flex-col leading-tight">
-                  <span className="text-[9px] uppercase">Get it on</span>
-                  <span className="text-[13px] font-semibold">Google Play</span>
-                </div>
-              </a>
 
-              {/* App Store */}
-              <a
-                href="#"
-                className="flex items-center gap-2 rounded-md bg-black px-4 py-2 text-white transition hover:bg-gray-800"
-              >
-                <FaApple size={24} />
-                <div className="flex flex-col leading-tight">
-                  <span className="text-[9px] uppercase">Download on the</span>
-                  <span className="text-[13px] font-semibold">App Store</span>
-                </div>
-              </a>
-            </div>
           </div>
 
           {/* Right: Quick Links + Grievance */}
@@ -199,7 +174,7 @@ export default function Footer() {
               Refund Policy
             </Link>
             <span className="text-slate-400">|</span>
-            <Link href="/privacy-policy" className="transition hover:text-white hover:underline">
+            <Link href="/PrivacyPolicy" className="transition hover:text-white hover:underline">
               Privacy Policy
             </Link>
             <span className="text-slate-400">|</span>
