@@ -20,7 +20,8 @@ export default function Footer() {
         { name: "Private Limited Company", href: "/company-registration/private-company-registration" },
         { name: "Limited Liability Partnership", href: "/company-registration/llp-registration" },
         { name: "One Person Company", href: "/company-registration/one-person-company-registration" },
-        { name: "Public limited Company", href: "/company-registration/private-company-registration" },
+        // FIXED: Changed href to public-company-registration
+        { name: "Public limited Company", href: "/company-registration/public-company-registration" },
         { name: "Section 8 Company", href: "/company-registration/section-8-company-registration" },
       ],
     },
@@ -68,7 +69,7 @@ export default function Footer() {
     { icon: FaXTwitter, href: "https://twitter.com", label: "Twitter" },
     { icon: FaLinkedinIn, href: "https://linkedin.com", label: "LinkedIn" },
     { icon: FaInstagram, href: "https://instagram.com", label: "Instagram" },
-    { icon: FaEnvelope, href: "mailto:info@onlinelegalindia.com", label: "Email" },
+    { icon: FaEnvelope, href: "mailto:info@IndoFilings.com", label: "Email" },
     { icon: FaYoutube, href: "https://youtube.com", label: "YouTube" },
   ]
 
@@ -76,7 +77,7 @@ export default function Footer() {
     <footer className="w-full bg-[#0B1F4D] border-t border-slate-700 text-slate-200">
       {/* Top Section */}
       <div className="mx-auto max-w-[1440px] px-6 py-14 lg:px-16">
-        
+
         {/* Footer Links Grid */}
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-5">
           {footerColumns.map((column) => (
@@ -85,8 +86,9 @@ export default function Footer() {
                 {column.title}
               </h3>
               <ul className="flex flex-col gap-3">
-                {column.links.map((link) => (
-                  <li key={link.href}>
+                {/* FIXED: Added index to the map and updated the key to prevent duplication errors */}
+                {column.links.map((link, index) => (
+                  <li key={`${link.name}-${index}`}>
                     <Link
                       href={link.href}
                       className="text-[13.5px] text-slate-300 transition hover:text-white hover:underline"
@@ -119,11 +121,11 @@ export default function Footer() {
 
         {/* Social + Quick Links Row */}
         <div className="mt-10 flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
-          
+
           {/* Left: Social + App Stores */}
           <div className="flex flex-col gap-5">
             <h4 className="text-[14px] font-bold text-slate-100">Follow Us</h4>
-            
+
             {/* Social Icons */}
             <div className="flex flex-wrap items-center gap-3">
               {socialLinks.map((social, idx) => {
@@ -173,15 +175,13 @@ export default function Footer() {
 
           {/* Right: Quick Links + Grievance */}
           <div className="flex flex-col gap-4 lg:items-end">
-
-
             <p className="text-[13px] text-slate-300">
               For any grievance mail to:{" "}
               <a
                 href="mailto:complain@fastinfo.com"
                 className="font-medium text-white hover:underline"
               >
-                xyz@gmail.com
+                complain@IndoFilings.com
               </a>
             </p>
           </div>
