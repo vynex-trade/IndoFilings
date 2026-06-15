@@ -71,88 +71,92 @@ export default function Home() {
     <div className="font-sans">
 
       {/* HERO SECTION */}
-      <section className="relative py-20 lg:py-28 bg-gradient-to-br from-white via-blue-50 to-gray-50 overflow-hidden">
-        {/* Background Elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-40"></div>
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-orange-100 rounded-full blur-3xl opacity-40"></div>
+      <section className="relative py-16 lg:py-24 overflow-hidden bg-gradient-to-br from-gray-50 to-blue-50">
+        {/* Background Shape */}
+        <div className="hidden lg:block absolute top-0 right-0 bottom-0 w-[40%] bg-[#e6f0f7] rounded-l-full"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-5xl mx-auto text-center">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
 
-            {/* Tag */}
-            <div className="inline-flex items-center px-5 py-2 rounded-full bg-white border border-gray-200 shadow-sm mb-6">
-              <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-              <span className="text-sm font-medium text-gray-700">
-                Trusted by Businesses Across India
-              </span>
-            </div>
+            {/* Left Content */}
+            <div>
+              <div className="border-l-4 border-[#f16622] pl-4 mb-6">
+                <span className="text-lg font-medium text-gray-700">
+                  Trusted Business Solutions Partner
+                </span>
+              </div>
 
-            {/* Heading */}
-            <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-[#082b72] leading-tight">
-              Complete Business
-              <span className="text-[#ff6b00]"> Registration</span>,
-              Compliance & Legal Solutions
-            </h1>
+              <h1 className="text-4xl lg:text-6xl font-bold text-[#082b72] leading-tight mb-6">
+                All-in-One Platform for
+                <span className="text-[#ff6b00]"> Business Registration</span>,
+                Compliance, HR & Legal Services
+              </h1>
 
-            {/* Divider */}
-            <div className="w-24 h-1 bg-[#ff6b00] rounded-full mx-auto mt-8 mb-8"></div>
+              <div className="w-24 h-1 bg-[#10a850] rounded-full mb-8"></div>
 
-            {/* Description */}
-            <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-4xl mx-auto">
-              From Company Registration and GST to Trademark, ISO Certification,
-              Compliance, Taxation, HR Services, and Digital Solutions — everything
-              your business needs under one trusted platform.
-            </p>
+              <p className="text-lg text-gray-600 mb-10 leading-relaxed">
+                Simplify your business journey with expert assistance for Company
+                Registration, GST, Trademark, ISO Certification, Compliance,
+                Taxation, HR Services and Digital Solutions.
+              </p>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-wrap justify-center gap-4 mt-10">
-              <Link
-                href="/contact"
-                className="bg-[#ff6b00] text-white px-8 py-4 rounded-xl font-semibold hover:bg-[#e55d00] transition-all duration-300 shadow-lg"
-              >
-                Get Started
-              </Link>
-            </div>
+              {/* Services */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-5 mb-10">
+                {[...heroListLeft, ...heroListRight].map((item, idx) => (
+                  <Link
+                    key={idx}
+                    href={item.link}
+                    className="flex items-center group hover:translate-x-1 transition-all duration-300"
+                  >
+                    <div className="w-10 h-10 rounded-lg bg-[#f16622] text-white flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-[#d9551a] group-hover:scale-110 transition-all duration-300">
+                      {item.icon}
+                    </div>
 
-            {/* Services Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mt-16">
-              {[...heroListLeft, ...heroListRight].slice(0, 8).map((item, idx) => (
+                    <span className="font-medium text-[#111b40] group-hover:text-[#f16622] transition-colors">
+                      {item.text}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+
+              {/* Buttons */}
+              <div className="flex flex-wrap gap-4">
                 <Link
-                  key={idx}
-                  href={item.link}
-                  className="bg-white border border-gray-200 rounded-2xl p-5 hover:shadow-xl transition-all duration-300 group"
+                  href="/contact"
+                  className="bg-[#ff6b00] text-white px-8 py-3 rounded-xl font-semibold hover:bg-[#e55d00] transition-all duration-300"
                 >
-                  <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-[#f16622] text-white flex items-center justify-center text-xl group-hover:scale-110 transition-all">
-                    {item.icon}
-                  </div>
-
-                  <h3 className="font-semibold text-[#082b72]">
-                    {item.text}
-                  </h3>
+                  Get Started
                 </Link>
-              ))}
+
+                <Link
+                  href="/services"
+                  className="border-2 border-[#082b72] text-[#082b72] px-8 py-3 rounded-xl font-semibold hover:bg-[#082b72] hover:text-white transition-all duration-300"
+                >
+                  Explore Services
+                </Link>
+              </div>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
-              <div className="bg-white rounded-2xl p-6 shadow-md">
-                <h3 className="text-3xl font-bold text-[#ff6b00]">5000+</h3>
-                <p className="text-gray-600 mt-1">Businesses Served</p>
+            {/* Right Side Image */}
+            <div className="relative">
+              <div className="bg-white p-4 rounded-3xl shadow-2xl">
+                <img
+                  src="/indo.jpeg"
+                  alt="Indo Filings"
+                  className="w-full rounded-2xl"
+                />
               </div>
 
-              <div className="bg-white rounded-2xl p-6 shadow-md">
-                <h3 className="text-3xl font-bold text-[#082b72]">100+</h3>
-                <p className="text-gray-600 mt-1">Professional Services</p>
+              {/* Floating Card 1 */}
+              <div className="absolute -top-5 -left-5 bg-white rounded-xl shadow-lg px-5 py-3">
+                <h4 className="text-2xl font-bold text-[#ff6b00]">100+</h4>
+                <p className="text-sm text-gray-600">Business Services</p>
               </div>
 
-              <div className="bg-white rounded-2xl p-6 shadow-md">
-                <h3 className="text-3xl font-bold text-[#10a850]">50+</h3>
-                <p className="text-gray-600 mt-1">Expert Consultants</p>
-              </div>
-
-              <div className="bg-white rounded-2xl p-6 shadow-md">
-                <h3 className="text-3xl font-bold text-[#ff6b00]">PAN India</h3>
-                <p className="text-gray-600 mt-1">Support Network</p>
+              {/* Floating Card 2 */}
+              <div className="absolute -bottom-5 -right-5 bg-white rounded-xl shadow-lg px-5 py-3">
+                <h4 className="text-2xl font-bold text-[#082b72]">PAN India</h4>
+                <p className="text-sm text-gray-600">Client Support</p>
               </div>
             </div>
 
@@ -312,28 +316,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* VIDEOS SECTION */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeading title="Expertise Meets Credibility" />
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              "https://images.unsplash.com/photo-1593642532744-d377ab507dc8?auto=format&fit=crop&q=80&w=600",
-              "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=600",
-              "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=600"
-            ].map((img, idx) => (
-              <div key={idx} className="relative rounded-xl overflow-hidden cursor-pointer group shadow-md">
-                <img src={img} alt="Video Thumbnail" className="w-full h-64 object-cover" />
-                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition duration-300 flex items-center justify-center">
-                  <FaPlay className="text-white text-5xl drop-shadow-lg opacity-90 group-hover:scale-110 transition duration-300" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
 
       {/* WHY CHOOSE US SECTION */}
       {/* WHY BUSINESSES TRUST INDO FILINGS */}
@@ -449,6 +431,27 @@ export default function Home() {
       </section>
 
       <WhyUsData />
+      {/* VIDEOS SECTION */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeading title="Expertise Meets Credibility" />
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              "https://images.unsplash.com/photo-1593642532744-d377ab507dc8?auto=format&fit=crop&q=80&w=600",
+              "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=600",
+              "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=600"
+            ].map((img, idx) => (
+              <div key={idx} className="relative rounded-xl overflow-hidden cursor-pointer group shadow-md">
+                <img src={img} alt="Video Thumbnail" className="w-full h-64 object-cover" />
+                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition duration-300 flex items-center justify-center">
+                  <FaPlay className="text-white text-5xl drop-shadow-lg opacity-90 group-hover:scale-110 transition duration-300" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
