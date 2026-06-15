@@ -113,12 +113,6 @@ export default function Home() {
                 Get Started
               </Link>
 
-              <Link
-                href="/services"
-                className="border-2 border-[#082b72] text-[#082b72] px-8 py-4 rounded-xl font-semibold hover:bg-[#082b72] hover:text-white transition-all duration-300"
-              >
-                Explore Services
-              </Link>
             </div>
 
             {/* Services Grid */}
