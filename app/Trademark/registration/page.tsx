@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
     FiArrowRight,
     FiChevronDown,
@@ -19,9 +19,23 @@ import {
     FiSearch,
     FiEdit3,
     FiVolume2,
-    FiAlertTriangle
+    FiAlertTriangle,
+    FiRefreshCw
 } from "react-icons/fi";
 import { BsBuilding, BsCurrencyRupee, BsCardChecklist } from "react-icons/bs";
+
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxvEQvWZa9L2zt8mhhsVqopEcH_fChGY57FwOt-idZMBa3c9lKmHWnZ4WWxM4ZKttoAHA/exec";
+
+const INDIAN_STATES = [
+    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+    "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka",
+    "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram",
+    "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu",
+    "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal",
+    "Andaman and Nicobar Islands", "Chandigarh",
+    "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Jammu and Kashmir",
+    "Ladakh", "Lakshadweep", "Puducherry",
+];
 
 // --- Outline Accordion (FAQs) ---
 const Accordion = ({ title, children, defaultOpen = false }: { title: string; children?: React.ReactNode; defaultOpen?: boolean }) => {
@@ -71,13 +85,15 @@ const PricingCard = ({
     price,
     features,
     highlight = false,
-    badge = ""
+    badge = "",
+    onContactClick // Added for scrolling
 }: {
     title: string;
     price: string;
     features: string[];
     highlight?: boolean;
     badge?: string;
+        onContactClick: () => void;
 }) => (
     <div className={`bg-white rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-1 transition-all duration-300 border flex flex-col h-full relative ${highlight ? "border-[#ff6f00] shadow-[#ff6f00]/20" : "border-gray-200"}`}>
         {badge && (
@@ -101,7 +117,10 @@ const PricingCard = ({
                     </li>
                 ))}
             </ul>
-            <button className={`w-full mt-auto ${highlight ? "bg-[#ff6f00] hover:bg-[#e66400]" : "bg-[#233a85] hover:bg-[#1a2b63]"} text-white font-bold py-3 rounded-md shadow-md transition-colors`}>
+            <button
+                onClick={onContactClick}
+                className={`w-full mt-auto ${highlight ? "bg-[#ff6f00] hover:bg-[#e66400]" : "bg-[#233a85] hover:bg-[#1a2b63]"} text-white font-bold py-3 rounded-md shadow-md transition-colors`}
+            >
                 Contact Now
             </button>
         </div>
@@ -109,11 +128,139 @@ const PricingCard = ({
 );
 
 export default function TrademarkApplicationPage() {
+    // --- REFS ---
+    const formRef = useRef<HTMLDivElement>(null); // For smooth scrolling to form
+    const dropdownRef = useRef<HTMLDivElement>(null); // For state dropdown clicking outside
+
+    // --- FORM STATE ---
+    const [formData, setFormData] = useState({ name: "", email: "", phone: "", state: "" });
+    const [captchaText, setCaptchaText] = useState("");
+    const [captchaInput, setCaptchaInput] = useState("");
+    const [errors, setErrors] = useState<Record<string, string>>({});
+    const [submitting, setSubmitting] = useState(false);
+
+    // --- DROPDOWN STATE ---
+    const [stateOpen, setStateOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
+
+    // Scroll function for Pricing Cards
+    const scrollToForm = () => {
+        formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    // Close state dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+                setStateOpen(false);
+                setSearchTerm("");
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    // --- GENERATE CAPTCHA ---
+    const generateCaptcha = () => {
+        const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        let captcha = "";
+        for (let i = 0; i < 5; i++) {
+            captcha += chars[Math.floor(Math.random() * chars.length)];
+        }
+        setCaptchaText(captcha);
+        setCaptchaInput("");
+    };
+
+    useEffect(() => {
+        generateCaptcha();
+    }, []);
+
+    // --- INPUT HANDLERS ---
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+        setErrors(prev => ({ ...prev, [name]: "" }));
+    };
+
+    const handleStateSelect = (state: string) => {
+        setFormData(prev => ({ ...prev, state }));
+        setErrors(prev => ({ ...prev, state: "" }));
+        setStateOpen(false);
+        setSearchTerm("");
+    };
+
+    const filteredStates = INDIAN_STATES.filter(s => s.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    // --- VALIDATION ---
+    const validate = () => {
+        const newErrors: Record<string, string> = {};
+        if (!formData.name.trim()) newErrors.name = "Name is required";
+        if (!formData.email.trim()) {
+            newErrors.email = "Email is required";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            newErrors.email = "Invalid email format";
+        }
+        if (!formData.phone.trim()) {
+            newErrors.phone = "Phone number is required";
+        } else if (!/^[6-9]\d{9}$/.test(formData.phone)) {
+            newErrors.phone = "Enter a valid 10-digit number";
+        }
+        if (!formData.state) newErrors.state = "Please select a state";
+
+        if (!captchaInput.trim()) {
+            newErrors.captcha = "Please enter the Captcha";
+        } else if (captchaInput.toUpperCase() !== captchaText) {
+            newErrors.captcha = "Incorrect Captcha";
+            generateCaptcha();
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    // --- SUBMIT HANDLER ---
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (!validate()) return;
+
+        setSubmitting(true);
+        try {
+            await fetch(GOOGLE_SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    fullName: formData.name,
+                    email: formData.email,
+                    mobile: formData.phone,
+                    state: formData.state
+                }),
+            });
+
+            alert("Thank you! Your request has been submitted successfully.");
+            setFormData({ name: "", email: "", phone: "", state: "" });
+            generateCaptcha();
+        } catch (err) {
+            console.error(err);
+            alert("Something went wrong. Please try again.");
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
     return (
         <div className="min-h-screen bg-white font-sans text-gray-800">
+            {/* Scrollbar styling for the state dropdown */}
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+                .custom-scrollbar::-webkit-scrollbar-track { background: #f3f4f6; }
+                .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+                .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+            `}} />
 
-            {/* 1. HERO SECTION WITH FORM */}
-            <section className="bg-[#233a85] py-16 px-4">
+            {/* 1. HERO SECTION WITH WORKING FORM */}
+            <section ref={formRef} className="bg-[#233a85] py-16 px-4">
                 <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-10 items-center">
 
                     {/* Left: Hero Text */}
@@ -155,39 +302,98 @@ export default function TrademarkApplicationPage() {
                             Fill up the form to get assistance.
                         </p>
 
-                        <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+                        <form className="space-y-4" onSubmit={handleSubmit} noValidate>
                             <div>
                                 <label className="text-xs font-semibold text-gray-600 mb-1 block">Your Name <span className="text-red-500">*</span></label>
-                                <input type="text" placeholder="Enter Name" className="w-full border border-gray-300 rounded p-2.5 text-sm focus:outline-none focus:border-[#233a85]" />
+                                <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Enter Name" className={`w-full border rounded p-2.5 text-sm focus:outline-none focus:border-[#233a85] ${errors.name ? 'border-red-500' : 'border-gray-300'}`} />
+                                {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                             </div>
                             <div>
                                 <label className="text-xs font-semibold text-gray-600 mb-1 block">Your Email Address <span className="text-red-500">*</span></label>
-                                <input type="email" placeholder="Email Address" className="w-full border border-gray-300 rounded p-2.5 text-sm focus:outline-none focus:border-[#233a85]" />
+                                <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email Address" className={`w-full border rounded p-2.5 text-sm focus:outline-none focus:border-[#233a85] ${errors.email ? 'border-red-500' : 'border-gray-300'}`} />
+                                {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                             </div>
                             <div>
                                 <label className="text-xs font-semibold text-gray-600 mb-1 block">Your Phone Number <span className="text-red-500">*</span></label>
-                                <input type="tel" placeholder="Without 0 or +91" className="w-full border border-gray-300 rounded p-2.5 text-sm focus:outline-none focus:border-[#233a85]" />
+                                <input type="tel" name="phone" value={formData.phone} onChange={handleChange} maxLength={10} placeholder="Without 0 or +91" className={`w-full border rounded p-2.5 text-sm focus:outline-none focus:border-[#233a85] ${errors.phone ? 'border-red-500' : 'border-gray-300'}`} />
+                                {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
                             </div>
+
+                            {/* CUSTOM SEARCHABLE STATE DROPDOWN */}
                             <div>
                                 <label className="text-xs font-semibold text-gray-600 mb-1 block">State <span className="text-red-500">*</span></label>
-                                <select className="w-full border border-gray-300 rounded p-2.5 text-sm focus:outline-none focus:border-[#233a85] text-gray-600 bg-white">
-                                    <option value="">Select State</option>
-                                    <option value="MH">Maharashtra</option>
-                                    <option value="DL">Delhi</option>
-                                    <option value="KA">Karnataka</option>
-                                </select>
-                            </div>
+                                <div ref={dropdownRef} className="relative">
+                                    <button
+                                        type="button"
+                                        onClick={() => setStateOpen(!stateOpen)}
+                                        className={`w-full flex items-center justify-between border rounded p-2.5 text-sm text-left bg-white focus:outline-none ${errors.state ? 'border-red-500' : 'border-gray-300'} ${!formData.state ? 'text-gray-400' : 'text-gray-900'}`}
+                                    >
+                                        {formData.state || "Select State"}
+                                        <FiChevronDown className="w-4 h-4 text-gray-500" />
+                                    </button>
 
-                            {/* Captcha */}
-                            <div className="flex items-center gap-3 pt-2">
-                                <div className="bg-gray-200 text-xl tracking-[0.3em] font-serif italic font-bold px-6 py-2 border border-gray-300 rounded shadow-inner text-gray-700 select-none">
-                                    7 1 9 4
+                                    {stateOpen && (
+                                        <div className="absolute left-0 right-0 top-full z-[100] mt-1 overflow-hidden rounded border border-gray-200 bg-white shadow-xl">
+                                            <input
+                                                type="text"
+                                                autoFocus
+                                                placeholder="Search state..."
+                                                value={searchTerm}
+                                                onChange={(e) => setSearchTerm(e.target.value)}
+                                                className="w-full border-b border-gray-100 p-2.5 text-sm outline-none"
+                                            />
+                                            <ul className="custom-scrollbar max-h-48 overflow-y-auto py-1">
+                                                {filteredStates.length > 0 ? (
+                                                    filteredStates.map((s) => (
+                                                        <button
+                                                            key={s}
+                                                            type="button"
+                                                            onClick={() => handleStateSelect(s)}
+                                                            className="block w-full px-4 py-2 text-left text-sm hover:bg-blue-50 transition-colors"
+                                                        >
+                                                            {s}
+                                                        </button>
+                                                    ))
+                                                ) : (
+                                                    <div className="px-4 py-3 text-sm text-gray-400 text-center">No states found</div>
+                                                )}
+                                            </ul>
+                                        </div>
+                                    )}
                                 </div>
-                                <input type="text" placeholder="Enter captcha here.." className="flex-grow border border-gray-300 rounded p-2 text-sm focus:outline-none focus:border-[#233a85]" />
+                                {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
                             </div>
 
-                            <button className="w-full bg-[#ff6f00] hover:bg-[#e66400] text-white font-bold text-lg py-3 rounded transition-colors shadow-md mt-4">
-                                Find Your Trademark Class
+                            {/* DYNAMIC CAPTCHA */}
+                            <div className="pt-2">
+                                <label className="text-xs font-semibold text-gray-600 mb-1 block">Verify you are human <span className="text-red-500">*</span></label>
+                                <div className="flex items-center gap-3">
+                                    <div className="relative flex items-center justify-center bg-gray-100 min-w-[120px] px-4 py-2 border border-gray-300 rounded shadow-inner overflow-hidden">
+                                        <div className="absolute w-full h-0.5 bg-gray-400 transform -rotate-12 opacity-50 z-0"></div>
+                                        <span className="text-xl tracking-widest font-mono italic font-bold text-[#233a85] select-none z-10">
+                                            {captchaText}
+                                        </span>
+                                    </div>
+                                    <button type="button" onClick={generateCaptcha} className="text-gray-500 hover:text-[#ff6f00] p-2 transition-colors" title="Reload Captcha">
+                                        <FiRefreshCw className="w-5 h-5" />
+                                    </button>
+                                    <input
+                                        type="text"
+                                        value={captchaInput}
+                                        onChange={(e) => {
+                                            setCaptchaInput(e.target.value);
+                                            setErrors(prev => ({ ...prev, captcha: "" }));
+                                        }}
+                                        placeholder="Enter text"
+                                        maxLength={5}
+                                        className={`flex-grow border rounded p-2 text-sm focus:outline-none focus:border-[#233a85] uppercase ${errors.captcha ? 'border-red-500' : 'border-gray-300'}`}
+                                    />
+                                </div>
+                                {errors.captcha && <p className="text-red-500 text-xs mt-1">{errors.captcha}</p>}
+                            </div>
+
+                            <button type="submit" disabled={submitting} className="w-full bg-[#ff6f00] hover:bg-[#e66400] text-white font-bold text-lg py-3 rounded transition-colors shadow-md mt-4 disabled:opacity-70 disabled:cursor-not-allowed">
+                                {submitting ? "Submitting..." : "Find Your Trademark Class"}
                             </button>
                         </form>
                     </div>
@@ -217,7 +423,7 @@ export default function TrademarkApplicationPage() {
                 </div>
             </section>
 
-            {/* 3. WHO CAN OPT FOR REGISTRATION (Grid) */}
+            {/* 3. WHO CAN OPT FOR REGISTRATION */}
             <section className="bg-[#f8f9fc] py-16 px-4 border-y border-gray-100">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-12">
@@ -249,7 +455,7 @@ export default function TrademarkApplicationPage() {
                 </div>
             </section>
 
-            {/* 4. IMPORTANCE OF TRADEMARK (Grid) */}
+            {/* 4. IMPORTANCE OF TRADEMARK */}
             <section className="py-16 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-12">
@@ -285,7 +491,7 @@ export default function TrademarkApplicationPage() {
                 </div>
             </section>
 
-            {/* 5. REGISTRY BACKGROUND & CLASSES (Blue Box) */}
+            {/* 5. REGISTRY BACKGROUND & CLASSES */}
             <section className="bg-[#233a85] py-16 px-4">
                 <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-10 text-white">
                     <div>
@@ -366,7 +572,10 @@ export default function TrademarkApplicationPage() {
                                     </li>
                                 ))}
                             </ul>
-                            <button className="w-full bg-[#233a85] hover:bg-[#1a2b63] text-white font-bold py-3 rounded transition-colors text-sm">
+                            <button
+                                onClick={scrollToForm}
+                                className="w-full bg-[#233a85] hover:bg-[#1a2b63] text-white font-bold py-3 rounded transition-colors text-sm"
+                            >
                                 Apply For Series Trademark
                             </button>
                         </div>
@@ -375,7 +584,7 @@ export default function TrademarkApplicationPage() {
                 </div>
             </section>
 
-            {/* 7. VISUAL FLOWCHART UI (Replaces Image) */}
+            {/* 7. VISUAL FLOWCHART UI */}
             <section className="bg-[#f8f9fc] py-16 px-4 border-y border-gray-100">
                 <div className="max-w-5xl mx-auto">
                     <div className="text-center mb-12">
@@ -386,9 +595,7 @@ export default function TrademarkApplicationPage() {
                         <div className="w-12 h-1 bg-[#ff6f00] mx-auto rounded-full mt-4"></div>
                     </div>
 
-                    {/* Flowchart Container */}
                     <div className="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-gray-200">
-
                         {/* Top Linear Path */}
                         <div className="flex flex-wrap justify-center items-center gap-2 md:gap-4 mb-10 text-center relative">
                             <div className="absolute top-1/2 left-[10%] right-[10%] h-0.5 bg-gray-200 -z-10 hidden md:block"></div>
@@ -406,7 +613,6 @@ export default function TrademarkApplicationPage() {
 
                         {/* Branching Path */}
                         <div className="grid md:grid-cols-2 gap-10 md:gap-0 relative">
-                            {/* Divider line for desktop */}
                             <div className="hidden md:block absolute top-0 bottom-0 left-1/2 w-px bg-gray-200 border-dashed border-l"></div>
 
                             {/* Left Branch: Accepted */}
@@ -436,25 +642,23 @@ export default function TrademarkApplicationPage() {
                                 <div className="bg-white border border-gray-200 p-3 rounded text-xs font-semibold text-gray-700 w-48 shadow-sm my-2">Hearing <br /><span className="text-[10px] text-gray-400 font-normal">(If reply not satisfactory)</span></div>
                                 <div className="w-px h-8 bg-gray-300"></div>
 
-                                {/* Micro Branch for Hearing result */}
                                 <div className="flex gap-4 w-full justify-center my-2">
                                     <div className="bg-gray-100 text-gray-500 p-2 rounded text-xs font-semibold w-24 border border-gray-200">Refused</div>
                                     <div className="bg-white border border-[#233a85] p-2 rounded text-xs font-semibold text-[#233a85] w-24 shadow-sm">Accepted</div>
                                 </div>
 
-                                <div className="w-px h-6 bg-gray-300 ml-28"></div> {/* Aligned with Accepted */}
+                                <div className="w-px h-6 bg-gray-300 ml-28"></div>
                                 <div className="bg-[#233a85] text-white p-3 rounded-lg text-sm font-bold w-48 shadow-md mt-2 flex flex-col items-center">
                                     <FiCheckCircle className="mb-1 w-5 h-5 text-[#ff6f00]" />
                                     Registered!
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* 8. PRICING PACKAGES (6 Tiers Grid) */}
+            {/* 8. PRICING PACKAGES */}
             <section className="bg-white py-16 px-4">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12">
@@ -465,18 +669,51 @@ export default function TrademarkApplicationPage() {
                         <p className="text-sm font-bold text-gray-500">* Excluding Govt. fees</p>
                     </div>
 
+                    {/* Pass onContactClick={scrollToForm} to every card */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
-                        <PricingCard title="Basic" price="1,999" features={["TM Application Filing", "Free Class Search", "Free Consultation", "Drafting & Filing by Expert", "Use TM next to brand", "EMI Facility"]} />
-                        <PricingCard title="Standard" price="4,999" features={["Everything in Basic", "Creative Logo Design (3 choices)", "Expertise TM Search Report", "Consultation till TM mark"]} />
-                        <PricingCard title="Premium" price="11,999" highlight={true} badge="Recommended" features={["Everything in Basic", "Expertise TM Search Report", "Consultation till TM mark", "Trademark Objection Reply", "Trademark Hearing Support"]} />
-                        <PricingCard title="All In One" price="14,999" features={["Everything in Premium", "Creative Logo Design (3 choices)"]} />
-                        <PricingCard title="TM Registration & Objection" price="3,999" features={["TM Application Filing", "Expertise Search Report", "Drafting & Filing", "Trademark Objection Reply"]} />
-                        <PricingCard title="TMR & ISO Certificate" price="5,999" features={["TM Application Filing", "ISO Application", "Free Class Search", "Drafting & Filing by Expert", "EMI Facility"]} />
+                        <PricingCard
+                            title="Basic"
+                            price="1,999"
+                            features={["TM Application Filing", "Free Class Search", "Free Consultation", "Drafting & Filing by Expert", "Use TM next to brand", "EMI Facility"]}
+                            onContactClick={scrollToForm}
+                        />
+                        <PricingCard
+                            title="Standard"
+                            price="4,999"
+                            features={["Everything in Basic", "Creative Logo Design (3 choices)", "Expertise TM Search Report", "Consultation till TM mark"]}
+                            onContactClick={scrollToForm}
+                        />
+                        <PricingCard
+                            title="Premium"
+                            price="11,999"
+                            highlight={true}
+                            badge="Recommended"
+                            features={["Everything in Basic", "Expertise TM Search Report", "Consultation till TM mark", "Trademark Objection Reply", "Trademark Hearing Support"]}
+                            onContactClick={scrollToForm}
+                        />
+                        <PricingCard
+                            title="All In One"
+                            price="14,999"
+                            features={["Everything in Premium", "Creative Logo Design (3 choices)"]}
+                            onContactClick={scrollToForm}
+                        />
+                        <PricingCard
+                            title="TM Registration & Objection"
+                            price="3,999"
+                            features={["TM Application Filing", "Expertise Search Report", "Drafting & Filing", "Trademark Objection Reply"]}
+                            onContactClick={scrollToForm}
+                        />
+                        <PricingCard
+                            title="TMR & ISO Certificate"
+                            price="5,999"
+                            features={["TM Application Filing", "ISO Application", "Free Class Search", "Drafting & Filing by Expert", "EMI Facility"]}
+                            onContactClick={scrollToForm}
+                        />
                     </div>
                 </div>
             </section>
 
-            {/* 9. HOW WE WORK (Stepper - 6 Steps) */}
+            {/* 9. HOW WE WORK (Stepper) */}
             <section className="bg-[#233a85] py-16 px-6">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-12">
