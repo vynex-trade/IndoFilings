@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
     FiArrowRight,
     FiChevronDown,
@@ -19,9 +19,24 @@ import {
     FiAlertTriangle,
     FiSearch,
     FiMail,
-    FiPhone
+    FiPhone,
+    FiRefreshCw
 } from "react-icons/fi";
 import { BsBuilding, BsCurrencyRupee, BsCardChecklist } from "react-icons/bs";
+
+// ⚠️ REPLACE THIS WITH YOUR GOOGLE SCRIPT WEB APP URL
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzZM0H4ta7D7-0mbpoIpINKNV-LlgTuTpwmuBaAoz4jcnJu3ZYzB0JB_oLQibkyKtgZkw/exec";
+
+const INDIAN_STATES = [
+    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+    "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka",
+    "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram",
+    "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu",
+    "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal",
+    "Andaman and Nicobar Islands", "Chandigarh",
+    "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Jammu and Kashmir",
+    "Ladakh", "Lakshadweep", "Puducherry",
+];
 
 // --- Outline Accordion (Used for FAQs) ---
 const Accordion = ({
@@ -95,13 +110,15 @@ const PricingCard = ({
     price,
     features,
     highlight = false,
-    badge = ""
+    badge = "",
+    onContactClick
 }: {
     title: string;
     price: string;
     features: string[];
     highlight?: boolean;
     badge?: string;
+        onContactClick: () => void;
 }) => (
     <div className={`bg-white rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-1 transition-all duration-300 border flex flex-col h-full relative ${highlight ? "border-[#ff6f00] shadow-[#ff6f00]/20" : "border-gray-200"}`}>
         {badge && (
@@ -125,7 +142,10 @@ const PricingCard = ({
                     </li>
                 ))}
             </ul>
-            <button className={`w-full mt-auto ${highlight ? "bg-[#ff6f00] hover:bg-[#e66400]" : "bg-[#233a85] hover:bg-[#1a2b63]"} text-white font-bold py-3 rounded-md shadow-md transition-colors`}>
+            <button
+                onClick={onContactClick}
+                className={`w-full mt-auto ${highlight ? "bg-[#ff6f00] hover:bg-[#e66400]" : "bg-[#233a85] hover:bg-[#1a2b63]"} text-white font-bold py-3 rounded-md shadow-md transition-colors`}
+            >
                 Buy Now
             </button>
         </div>
@@ -133,91 +153,303 @@ const PricingCard = ({
 );
 
 export default function TrademarkObjectionReplyPage() {
+    // --- REFS ---
+    const formRef = useRef<HTMLDivElement>(null);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    // --- FORM STATE ---
+    const [formData, setFormData] = useState({
+        name: "",
+        phone: "",
+        email: "",
+        state: "",
+        city: "",
+        source: ""
+    });
+
+    const [captchaText, setCaptchaText] = useState("");
+    const [captchaInput, setCaptchaInput] = useState("");
+    const [errors, setErrors] = useState<Record<string, string>>({});
+    const [submitting, setSubmitting] = useState(false);
+
+    const [stateOpen, setStateOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
+
+    // --- SCROLL TO FORM ---
+    const scrollToForm = () => {
+        formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    // Close state dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+                setStateOpen(false);
+                setSearchTerm("");
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    // --- GENERATE CAPTCHA ---
+    const generateCaptcha = () => {
+        const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        let captcha = "";
+        for (let i = 0; i < 5; i++) {
+            captcha += chars[Math.floor(Math.random() * chars.length)];
+        }
+        setCaptchaText(captcha);
+        setCaptchaInput("");
+    };
+
+    useEffect(() => {
+        generateCaptcha();
+    }, []);
+
+    // --- INPUT HANDLERS ---
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+        setErrors(prev => ({ ...prev, [name]: "" }));
+    };
+
+    const handleStateSelect = (state: string) => {
+        setFormData(prev => ({ ...prev, state }));
+        setErrors(prev => ({ ...prev, state: "" }));
+        setStateOpen(false);
+        setSearchTerm("");
+    };
+
+    const filteredStates = INDIAN_STATES.filter(s => s.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    // --- VALIDATION ---
+    const validate = () => {
+        const newErrors: Record<string, string> = {};
+        if (!formData.name.trim()) newErrors.name = "Name is required";
+        if (!formData.email.trim()) {
+            newErrors.email = "Email is required";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            newErrors.email = "Invalid email format";
+        }
+        if (!formData.phone.trim()) {
+            newErrors.phone = "Mobile is required";
+        } else if (!/^[6-9]\d{9}$/.test(formData.phone)) {
+            newErrors.phone = "Enter a valid 10-digit number";
+        }
+        if (!formData.state) newErrors.state = "State is required";
+        if (!formData.city.trim()) newErrors.city = "City is required";
+        if (!formData.source) newErrors.source = "Please select a source";
+
+        if (!captchaInput.trim()) {
+            newErrors.captcha = "Please enter the Captcha";
+        } else if (captchaInput.toUpperCase() !== captchaText) {
+            newErrors.captcha = "Incorrect Captcha";
+            generateCaptcha();
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    // --- SUBMIT HANDLER ---
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (!validate()) return;
+
+        setSubmitting(true);
+        try {
+            await fetch(GOOGLE_SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: formData.name,
+                    email: formData.email,
+                    mobile: formData.phone,
+                    state: formData.state,
+                    city: formData.city,
+                    source: formData.source
+                }),
+            });
+
+            alert("Thank you! Your request has been submitted successfully.");
+            setFormData({ name: "", phone: "", email: "", state: "", city: "", source: "" });
+            generateCaptcha();
+        } catch (err) {
+            console.error(err);
+            alert("Something went wrong. Please try again.");
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
     return (
         <div className="min-h-screen bg-white font-sans text-gray-800">
+            {/* Scrollbar CSS */}
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+                .custom-scrollbar::-webkit-scrollbar-track { background: #f3f4f6; }
+                .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+                .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+            `}} />
 
             {/* 1. HERO SECTION WITH FORM */}
-            <section className="bg-[#233a85] py-16 px-4">
+            <section ref={formRef} className="bg-[#233a85] py-12 md:py-16 px-4 scroll-mt-10">
                 <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-10 items-center">
 
                     {/* Left: Hero Text */}
                     <div className="md:col-span-7 text-white text-center md:text-left">
-                        <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 leading-tight">
+                        <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6 leading-tight">
                             Reply To Your Objected Trademark
                         </h1>
-                        <p className="text-blue-100 font-medium text-lg leading-relaxed mb-6">
+                        <p className="text-blue-100 font-medium text-base md:text-lg leading-relaxed mb-6">
                             OnlineLegalIndia.com can help you file a professional reply to a trademark objection in 5 to 10 working days, subject to government and client processing time.
                         </p>
 
-                        <div className="bg-[#1d3275] border-l-4 border-[#ff6f00] p-5 rounded-r-lg mb-8 inline-block text-left shadow-md">
-                            <p className="text-sm text-blue-50 leading-relaxed">
+                        <div className="bg-[#1d3275] border-l-4 border-[#ff6f00] p-4 md:p-5 rounded-r-lg mb-6 inline-block text-left shadow-md">
+                            <p className="text-xs md:text-sm text-blue-50 leading-relaxed">
                                 The validity of the Trademark exists for 10 years. Renew your Trademark certificate before expiration to avoid any objection & interruption. The application has to be filed on or before 6 months from the date of expiration of the registration.
                             </p>
                         </div>
 
-                        {/* Stat Cards */}
-                        <div className="hidden md:flex gap-4 mt-2">
-                            <div className="bg-white/10 px-5 py-3 rounded-lg border border-white/20 flex flex-col items-center">
-                                <span className="text-2xl font-black text-[#ff6f00]">5 Lac+</span>
-                                <span className="text-xs font-semibold text-blue-50 tracking-wider uppercase">Happy Clients</span>
+                        {/* Stat Cards - Mobile Friendly Flex-wrap */}
+                        <div className="flex flex-wrap justify-center md:justify-start gap-3 mt-2">
+                            <div className="bg-white/10 px-4 py-2 md:px-5 md:py-3 rounded-lg border border-white/20 flex flex-col items-center flex-1 sm:flex-none min-w-[120px]">
+                                <span className="text-xl md:text-2xl font-black text-[#ff6f00]">5 Lac+</span>
+                                <span className="text-[10px] md:text-xs font-semibold text-blue-50 tracking-wider uppercase text-center">Happy Clients</span>
                             </div>
-                            <div className="bg-white/10 px-5 py-3 rounded-lg border border-white/20 flex flex-col items-center">
-                                <span className="text-2xl font-black text-[#ff6f00]">Easy EMI</span>
-                                <span className="text-xs font-semibold text-blue-50 tracking-wider uppercase">Options Available</span>
+                            <div className="bg-white/10 px-4 py-2 md:px-5 md:py-3 rounded-lg border border-white/20 flex flex-col items-center flex-1 sm:flex-none min-w-[120px]">
+                                <span className="text-xl md:text-2xl font-black text-[#ff6f00]">Easy EMI</span>
+                                <span className="text-[10px] md:text-xs font-semibold text-blue-50 tracking-wider uppercase text-center">Options Available</span>
                             </div>
                         </div>
                     </div>
 
                     {/* Right: Lead Form */}
-                    <div className="md:col-span-5 bg-white p-7 rounded-lg shadow-2xl">
-                        <h3 className="text-xl font-bold text-[#0b1b3d] mb-1">
+                    <div className="md:col-span-5 bg-white p-5 md:p-7 rounded-xl shadow-2xl">
+                        <h3 className="text-lg md:text-xl font-bold text-[#0b1b3d] mb-1 text-center md:text-left">
                             Need Help with Trademark Objection Reply?
                         </h3>
-                        <p className="text-xs text-gray-500 mb-6">
+                        <p className="text-xs text-gray-500 mb-6 text-center md:text-left">
                             Fill Up the below Mentioned Form
                         </p>
 
-                        <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+                        <form className="space-y-4" onSubmit={handleSubmit} noValidate>
                             <div>
                                 <label className="text-xs font-semibold text-gray-600 mb-1 block">Your Name <span className="text-red-500">*</span></label>
-                                <input type="text" placeholder="Enter Name" className="w-full border border-gray-300 rounded p-2.5 text-sm focus:outline-none focus:border-[#233a85]" />
-                            </div>
-                            <div>
-                                <label className="text-xs font-semibold text-gray-600 mb-1 block">Your Email Address <span className="text-red-500">*</span></label>
-                                <input type="email" placeholder="Email Address" className="w-full border border-gray-300 rounded p-2.5 text-sm focus:outline-none focus:border-[#233a85]" />
-                            </div>
-                            <div>
-                                <label className="text-xs font-semibold text-gray-600 mb-1 block">Your Phone Number <span className="text-red-500">*</span></label>
-                                <input type="tel" placeholder="Without 0 or +91" className="w-full border border-gray-300 rounded p-2.5 text-sm focus:outline-none focus:border-[#233a85]" />
-                            </div>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="text-xs font-semibold text-gray-600 mb-1 block">State <span className="text-red-500">*</span></label>
-                                    <select className="w-full border border-gray-300 rounded p-2.5 text-sm focus:outline-none focus:border-[#233a85] text-gray-600 bg-white">
-                                        <option value="">Select State</option>
-                                        <option value="MH">Maharashtra</option>
-                                        <option value="DL">Delhi</option>
-                                        <option value="KA">Karnataka</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="text-xs font-semibold text-gray-600 mb-1 block">City <span className="text-red-500">*</span></label>
-                                    <input type="text" placeholder="Your City" className="w-full border border-gray-300 rounded p-2.5 text-sm focus:outline-none focus:border-[#233a85]" />
-                                </div>
-                            </div>
-                            <div>
-                                <label className="text-xs font-semibold text-gray-600 mb-1 block">Where did you hear about us? <span className="text-red-500">*</span></label>
-                                <select className="w-full border border-gray-300 rounded p-2.5 text-sm focus:outline-none focus:border-[#233a85] text-gray-600 bg-white">
-                                    <option value="">Select Source</option>
-                                    <option value="google">Google</option>
-                                    <option value="social">Social Media</option>
-                                    <option value="referral">Referral</option>
-                                    <option value="other">Other</option>
-                                </select>
+                                <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Enter Name" className={`w-full border rounded p-2.5 text-sm focus:outline-none focus:border-[#233a85] ${errors.name ? 'border-red-500' : 'border-gray-300'}`} />
+                                {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                             </div>
 
-                            <button className="w-full bg-[#ff6f00] hover:bg-[#e66400] text-white font-bold text-lg py-3 rounded transition-colors shadow-md mt-4">
-                                Submit Request
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="text-xs font-semibold text-gray-600 mb-1 block">Your Phone Number <span className="text-red-500">*</span></label>
+                                    <input type="tel" name="phone" value={formData.phone} onChange={handleChange} maxLength={10} placeholder="Without 0 or +91" className={`w-full border rounded p-2.5 text-sm focus:outline-none focus:border-[#233a85] ${errors.phone ? 'border-red-500' : 'border-gray-300'}`} />
+                                    {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
+                                </div>
+                                <div>
+                                    <label className="text-xs font-semibold text-gray-600 mb-1 block">Your Email Address <span className="text-red-500">*</span></label>
+                                    <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email Address" className={`w-full border rounded p-2.5 text-sm focus:outline-none focus:border-[#233a85] ${errors.email ? 'border-red-500' : 'border-gray-300'}`} />
+                                    {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                {/* CUSTOM STATE DROPDOWN */}
+                                <div>
+                                    <label className="text-xs font-semibold text-gray-600 mb-1 block">State <span className="text-red-500">*</span></label>
+                                    <div ref={dropdownRef} className="relative">
+                                        <button
+                                            type="button"
+                                            onClick={() => setStateOpen(!stateOpen)}
+                                            className={`w-full flex items-center justify-between border rounded p-2.5 text-sm text-left bg-white focus:outline-none ${errors.state ? 'border-red-500' : 'border-gray-300'} ${!formData.state ? 'text-gray-400' : 'text-gray-900'}`}
+                                        >
+                                            <span className="truncate pr-2">{formData.state || "Select State"}</span>
+                                            <FiChevronDown className="w-4 h-4 text-gray-500 flex-shrink-0" />
+                                        </button>
+
+                                        {stateOpen && (
+                                            <div className="absolute left-0 right-0 top-full z-[100] mt-1 overflow-hidden rounded border border-gray-200 bg-white shadow-xl">
+                                                <input
+                                                    type="text"
+                                                    autoFocus
+                                                    placeholder="Search..."
+                                                    value={searchTerm}
+                                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                                    className="w-full border-b border-gray-100 p-2.5 text-sm outline-none"
+                                                />
+                                                <ul className="custom-scrollbar max-h-48 overflow-y-auto py-1">
+                                                    {filteredStates.length > 0 ? (
+                                                        filteredStates.map((s) => (
+                                                            <button
+                                                                key={s}
+                                                                type="button"
+                                                                onClick={() => handleStateSelect(s)}
+                                                                className="block w-full px-3 py-2 text-left text-sm hover:bg-blue-50 transition-colors"
+                                                            >
+                                                                {s}
+                                                            </button>
+                                                        ))
+                                                    ) : (
+                                                        <div className="px-4 py-3 text-sm text-gray-400 text-center">No states found</div>
+                                                    )}
+                                                </ul>
+                                            </div>
+                                        )}
+                                    </div>
+                                    {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
+                                </div>
+
+                                <div>
+                                    <label className="text-xs font-semibold text-gray-600 mb-1 block">City <span className="text-red-500">*</span></label>
+                                    <input type="text" name="city" value={formData.city} onChange={handleChange} placeholder="Your City" className={`w-full border rounded p-2.5 text-sm focus:outline-none focus:border-[#233a85] ${errors.city ? 'border-red-500' : 'border-gray-300'}`} />
+                                    {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="text-xs font-semibold text-gray-600 mb-1 block">Where did you hear about us? <span className="text-red-500">*</span></label>
+                                <select name="source" value={formData.source} onChange={handleChange} className={`w-full border rounded p-2.5 text-sm focus:outline-none focus:border-[#233a85] bg-white ${errors.source ? 'border-red-500' : 'border-gray-300'}`}>
+                                    <option value="">Select Source</option>
+                                    <option value="Google">Google</option>
+                                    <option value="Social Media">Social Media</option>
+                                    <option value="Referral">Referral</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                {errors.source && <p className="text-red-500 text-xs mt-1">{errors.source}</p>}
+                            </div>
+
+                            {/* CAPTCHA */}
+                            <div className="pt-1">
+                                <label className="text-xs font-semibold text-gray-600 mb-1 block">Verify you are human <span className="text-red-500">*</span></label>
+                                <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-3">
+                                    <div className="flex items-center gap-2">
+                                        <div className="relative flex items-center justify-center bg-gray-100 min-w-[100px] px-3 py-2 border border-gray-300 rounded shadow-inner overflow-hidden">
+                                            <div className="absolute w-full h-0.5 bg-gray-400 transform -rotate-12 opacity-50 z-0"></div>
+                                            <span className="text-lg tracking-widest font-mono italic font-bold text-[#233a85] select-none z-10">
+                                                {captchaText}
+                                            </span>
+                                        </div>
+                                        <button type="button" onClick={generateCaptcha} className="text-gray-500 hover:text-[#ff6f00] p-2 transition-colors" title="Reload Captcha">
+                                            <FiRefreshCw className="w-5 h-5" />
+                                        </button>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        value={captchaInput}
+                                        onChange={(e) => { setCaptchaInput(e.target.value); setErrors(prev => ({ ...prev, captcha: "" })); }}
+                                        placeholder="Enter Captcha"
+                                        maxLength={5}
+                                        className={`w-full sm:w-auto sm:flex-grow border rounded p-2.5 text-sm focus:outline-none focus:border-[#233a85] uppercase ${errors.captcha ? 'border-red-500' : 'border-gray-300'}`}
+                                    />
+                                </div>
+                                {errors.captcha && <p className="text-red-500 text-xs mt-1">{errors.captcha}</p>}
+                            </div>
+
+                            <button type="submit" disabled={submitting} className="w-full bg-[#ff6f00] hover:bg-[#e66400] text-white font-bold text-lg py-3 rounded-lg transition-colors shadow-md mt-2 disabled:opacity-70">
+                                {submitting ? "Submitting..." : "Submit Request"}
                             </button>
                         </form>
                     </div>
@@ -226,16 +458,16 @@ export default function TrademarkObjectionReplyPage() {
             </section>
 
             {/* 2. REASONS FOR TRADEMARK OBJECTION */}
-            <section className="py-16 px-4 bg-white border-b border-gray-100">
+            <section className="py-12 md:py-16 px-4 bg-white border-b border-gray-100">
                 <div className="max-w-5xl mx-auto">
-                    <div className="text-center mb-10">
+                    <div className="text-center mb-10 md:mb-12">
                         <h2 className="text-2xl md:text-3xl font-extrabold text-[#0b1b3d] mb-4">
                             Reasons for Trademark Objection
                         </h2>
                         <div className="w-12 h-1 bg-[#ff6f00] mx-auto rounded-full"></div>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {[
                             "Incorrect Name of the Trademark Applicant",
                             "Incorrect Address on the Trademark Application",
@@ -260,10 +492,10 @@ export default function TrademarkObjectionReplyPage() {
             </section>
 
             {/* 3. HOW WE WORK (Stepper) */}
-            <section className="bg-[#f8f9fc] py-16 px-4 border-b border-gray-100">
+            <section className="bg-[#f8f9fc] py-12 md:py-16 px-4 border-b border-gray-100">
                 <div className="max-w-6xl mx-auto">
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl font-extrabold text-[#0b1b3d] mb-4">
+                    <div className="text-center mb-10 md:mb-12">
+                        <h2 className="text-2xl md:text-3xl font-extrabold text-[#0b1b3d] mb-4">
                             How We Work?
                         </h2>
                         <div className="w-12 h-1 bg-[#ff6f00] mx-auto rounded-full"></div>
@@ -279,15 +511,15 @@ export default function TrademarkObjectionReplyPage() {
                             "Congratulations! Reply Submitted Online"
                         ].map((step, index, arr) => (
                             <React.Fragment key={index}>
-                                <div className="flex flex-col items-center w-[130px] md:w-[150px]">
-                                    <div className="w-14 h-14 bg-white text-[#233a85] rounded-full flex items-center justify-center font-extrabold text-xl mb-4 shadow-lg border-4 border-[#ff6f00]">
+                                <div className="flex flex-col items-center w-[120px] sm:w-[130px] md:w-[150px]">
+                                    <div className="w-12 h-12 md:w-14 md:h-14 bg-white text-[#233a85] rounded-full flex items-center justify-center font-extrabold text-lg md:text-xl mb-3 md:mb-4 shadow-lg border-4 border-[#ff6f00]">
                                         {index + 1}
                                     </div>
-                                    <p className="text-[12px] md:text-[13px] font-semibold text-[#0b1b3d] leading-snug">{step}</p>
+                                    <p className="text-[11px] md:text-[13px] font-semibold text-[#0b1b3d] leading-snug">{step}</p>
                                 </div>
                                 {index !== arr.length - 1 && (
                                     <div className="hidden lg:flex items-center mt-4 text-[#ff6f00]">
-                                        <FiArrowRight className="w-6 h-6" />
+                                        <FiArrowRight className="w-5 h-5 md:w-6 md:h-6" />
                                     </div>
                                 )}
                             </React.Fragment>
@@ -297,44 +529,44 @@ export default function TrademarkObjectionReplyPage() {
             </section>
 
             {/* 4. DOCUMENTs REQUIRED */}
-            <section className="py-16 px-4 bg-white">
+            <section className="py-12 md:py-16 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl font-extrabold text-[#0b1b3d] mb-4">
+                    <div className="text-center mb-10 md:mb-12">
+                        <h2 className="text-2xl md:text-3xl font-extrabold text-[#0b1b3d] mb-4">
                             Required Documents for Trademark Objection Reply
                         </h2>
                         <div className="w-12 h-1 bg-[#ff6f00] mx-auto rounded-full"></div>
                     </div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {[
                             {
-                                icon: <FiFileText className="w-8 h-8" />,
+                                icon: <FiFileText className="w-7 h-7 md:w-8 md:h-8" />,
                                 title: "Brand Logo",
                                 desc: "Clear copy of the trademark/logo that is objected."
                             },
                             {
-                                icon: <FiSearch className="w-8 h-8" />,
+                                icon: <FiSearch className="w-7 h-7 md:w-8 md:h-8" />,
                                 title: "Examination Report",
                                 desc: "The official examination report issued by the Trademark Registry."
                             },
                             {
-                                icon: <BsCardChecklist className="w-8 h-8" />,
+                                icon: <BsCardChecklist className="w-7 h-7 md:w-8 md:h-8" />,
                                 title: "Supporting Proof",
                                 desc: "Evidence supporting your ownership and usage of the trademark (User Affidavit, invoices, etc.)."
                             },
                             {
-                                icon: <FiEdit3 className="w-8 h-8" />,
+                                icon: <FiEdit3 className="w-7 h-7 md:w-8 md:h-8" />,
                                 title: "Form TM-48",
                                 desc: "Power of Attorney authorizing your agent/advocate to act on your behalf."
                             }
                         ].map((doc, idx) => (
-                            <div key={idx} className="bg-[#f8f9fc] p-6 rounded-xl border border-gray-100 flex flex-col items-center text-center hover:shadow-md transition-shadow">
-                                <div className="bg-orange-50 text-[#ff6f00] p-3 rounded-full mb-4">
+                            <div key={idx} className="bg-[#f8f9fc] p-5 md:p-6 rounded-xl border border-gray-100 flex flex-col items-center text-center hover:shadow-md transition-shadow">
+                                <div className="bg-orange-50 text-[#ff6f00] p-3 rounded-full mb-3 md:mb-4">
                                     {doc.icon}
                                 </div>
                                 <h3 className="font-bold text-[#0b1b3d] mb-2">{doc.title}</h3>
-                                <p className="text-xs text-gray-600 leading-relaxed">{doc.desc}</p>
+                                <p className="text-xs md:text-sm text-gray-600 leading-relaxed">{doc.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -342,20 +574,21 @@ export default function TrademarkObjectionReplyPage() {
             </section>
 
             {/* 5. PACKAGES */}
-            <section className="bg-[#f8f9fc] py-16 px-4 border-y border-gray-100">
+            <section className="bg-[#f8f9fc] py-12 md:py-16 px-4 border-y border-gray-100">
                 <div className="max-w-5xl mx-auto">
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl font-extrabold text-[#0b1b3d] mb-4">
+                    <div className="text-center mb-10 md:mb-12">
+                        <h2 className="text-2xl md:text-3xl font-extrabold text-[#0b1b3d] mb-4">
                             Select Your Package
                         </h2>
                         <div className="w-12 h-1 bg-[#ff6f00] mx-auto rounded-full mb-4"></div>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                         <PricingCard
                             title="Standard Plan"
                             price="4,599"
                             badge="Limited Offer"
+                            onContactClick={scrollToForm}
                             features={[
                                 "Free Consultation with TM expert",
                                 "Drafting and filing of TM objection",
@@ -369,6 +602,7 @@ export default function TrademarkObjectionReplyPage() {
                             price="10,999"
                             badge="Limited Offer"
                             highlight={true}
+                            onContactClick={scrollToForm}
                             features={[
                                 "Free Consultation with TM expert",
                                 "Drafting and filing of TM objection",
@@ -382,10 +616,10 @@ export default function TrademarkObjectionReplyPage() {
             </section>
 
             {/* 6. FAQs */}
-            <section className="py-20 px-4 bg-white">
+            <section className="py-12 md:py-20 px-4 bg-white">
                 <div className="max-w-4xl mx-auto">
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl font-extrabold text-[#0b1b3d] mb-4">
+                    <div className="text-center mb-10 md:mb-12">
+                        <h2 className="text-2xl md:text-3xl font-extrabold text-[#0b1b3d] mb-4">
                             Frequently Asked Questions (FAQs)
                         </h2>
                         <div className="w-12 h-1 bg-[#ff6f00] mx-auto rounded-full"></div>
